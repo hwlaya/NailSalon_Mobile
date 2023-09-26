@@ -83,7 +83,12 @@ const Login = () => {
                 style={{ width: "85%", borderRadius: 30, paddingVertical: 8 }}
               >
                 <View style={{ alignItems: "center", marginTop: "10%" }}>
-                  <Text variant="displaySmall">Login</Text>
+                  <Text
+                    variant="displaySmall"
+                    style={{ fontFamily: "Montserrat-Regular" }}
+                  >
+                    Login
+                  </Text>
                 </View>
                 <TextInput
                   mode="outlined"
@@ -146,9 +151,13 @@ const Login = () => {
                   navigation.navigate("Register");
                 }}
               >
-                <Text style={{ paddingTop: "10%" }}>
+                <Text
+                  style={{ fontFamily: "Montserrat-Light", paddingTop: "10%" }}
+                >
                   Don't have an account yet?{" "}
-                  <Text style={{ fontWeight: "bold" }}>Register here!</Text>
+                  <Text style={{ fontFamily: "Montserrat-Bold" }}>
+                    Register here!
+                  </Text>
                 </Text>
               </TouchableOpacity>
             </View>

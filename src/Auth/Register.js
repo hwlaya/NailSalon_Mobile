@@ -14,7 +14,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 // import Header from "../components/Header";
 
-const screenHeight = Dimensions.get("window").height;
+// const screenHeight = Dimensions.get("window").height;
 
 const Register = () => {
   const navigation = useNavigation();
@@ -79,7 +79,7 @@ const Register = () => {
           textColor="#000"
           style={{
             alignSelf: "flex-start",
-            justifyContent: "flex-start",
+            marginTop: 10,
           }}
           onPress={() => {
             navigation.navigate("Login");
@@ -95,8 +95,16 @@ const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Text variant="displaySmall">Register</Text>
-                <Text variant="labelMedium">
+                <Text
+                  variant="displaySmall"
+                  style={{ fontFamily: "Montserrat-Regular" }}
+                >
+                  Register
+                </Text>
+                <Text
+                  variant="labelMedium"
+                  style={{ fontFamily: "Montserrat-Medium" }}
+                >
                   Please input all the required requirements to register{" "}
                 </Text>
               </View>
@@ -275,9 +283,9 @@ const Register = () => {
                 navigation.navigate("Login");
               }}
             >
-              <Text>
+              <Text style={{ fontFamily: "Montserrat-Light" }}>
                 Already have an account?{" "}
-                <Text style={{ fontWeight: "bold" }}>Login</Text>
+                <Text style={{ fontFamily: "Montserrat-Bold" }}>Login</Text>
               </Text>
             </TouchableOpacity>
             <View>

@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 // In App.js in a new project
 
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./src/Auth/Login";
@@ -11,6 +11,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import MainNavigation from "./src/Navigation/MainNavigation";
 import { PaperProvider } from "react-native-paper";
 import { UserProvider } from "./src/providers/UserProvider";
+import { useFonts } from "expo-font";
 
 // function HomeScreen() {
 //   return (
@@ -22,7 +23,16 @@ import { UserProvider } from "./src/providers/UserProvider";
 
 const Stack = createNativeStackNavigator();
 
-function App() {
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    "Montserrat-Black": require("./src/assets/fonts/Montserrat-Black.ttf"),
+    "Montserrat-Bold": require("./src/assets/fonts/Montserrat-Bold.ttf"),
+    "Montserrat-Light": require("./src/assets/fonts/Montserrat-Light.ttf"),
+    "Montserrat-Medium": require("./src/assets/fonts/Montserrat-Medium.ttf"),
+    "Montserrat-Regular": require("./src/assets/fonts/Montserrat-Regular.ttf"),
+    "Montserrat-Thin": require("./src/assets/fonts/Montserrat-Thin.ttf"),
+  });
+
   return (
     <SafeAreaProvider>
       <PaperProvider>
@@ -33,5 +43,3 @@ function App() {
     </SafeAreaProvider>
   );
 }
-
-export default App;

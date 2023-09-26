@@ -112,7 +112,7 @@ const CustomDrawerContent = (props) => {
   const navigation = useNavigation();
   return (
     <View>
-      <Drawer.Section title={`Title`}>
+      <Drawer.Section title={`Menu`}>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
@@ -129,16 +129,19 @@ const CustomDrawerContent = (props) => {
             <Icon name="account" size={50} color={"#fff"} />
           </View>
           <View style={{ justifyContent: "center", marginLeft: 20 }}>
-            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+            <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20 }}>
               {user.user.first_name} {user.user.last_name}
             </Text>
-            <Text>{user.user.email}</Text>
+            <Text style={{ fontFamily: "Montserrat-Light" }}>
+              {user.user.email}
+            </Text>
           </View>
         </View>
         <Divider style={{ marginTop: 20 }} />
         <Drawer.Item
           label="Home"
           active={active === "Home"}
+          icon={() => <Icon name="home" size={30} color={"#F8C5C5"} />}
           onPress={() => {
             navigation.navigate("BottomNav");
           }}
@@ -146,6 +149,7 @@ const CustomDrawerContent = (props) => {
         <Drawer.Item
           label="Profile"
           active={active === "Profile"}
+          icon={() => <Icon name="account" size={30} color={"#F8C5C5"} />}
           onPress={() => {
             navigation.navigate("Profile");
           }}
@@ -153,6 +157,7 @@ const CustomDrawerContent = (props) => {
       </Drawer.Section>
       <Drawer.Item
         label="Logout"
+        icon={() => <Icon name="logout" size={30} color={"#F8C5C5"} />}
         onPress={() => {
           navigation.navigate("Login");
         }}
