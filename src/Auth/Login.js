@@ -21,8 +21,9 @@ const screenHeight = Dimensions.get("window").height;
 const Login = () => {
   const navigation = useNavigation();
   const user = useContext(UserContext);
-  const [email, setEmail] = useState("hanslaya08@gmail.com");
-  const [password, setPassword] = useState("Password.123");
+  const userProfile = useContext(UserContext);
+  const [email, setEmail] = useState("waynelaya08@gmail.com");
+  const [password, setPassword] = useState("Password.1");
   const [loading, setLoading] = useState(false);
 
   const onSubmitLogin = () => {
@@ -39,6 +40,7 @@ const Login = () => {
         .then((response) => {
           setLoading(false);
           user.user = response.data.user;
+          user.userProfile = response.data.user_profile;
           navigation.navigate("DrawerStack", {
             screen: "Home",
             params: {
