@@ -18,16 +18,16 @@ import Loading from "../components/Loading";
 
 const Register = () => {
   const navigation = useNavigation();
-  const [fname, setFname] = useState("");
-  const [mname, setMname] = useState("");
-  const [lname, setLname] = useState("");
-  const [bday, setBday] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [uname, setUname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [cpassword, setCpassword] = useState("");
+  const [fname, setFname] = useState("Timmy");
+  const [mname, setMname] = useState("Santos");
+  const [lname, setLname] = useState("Turner");
+  const [bday, setBday] = useState("09/22/99");
+  const [address, setAddress] = useState("pasig");
+  const [phone, setPhone] = useState("09123456789");
+  const [uname, setUname] = useState("TimmyT");
+  const [email, setEmail] = useState("waynelaya08@gmail.com");
+  const [password, setPassword] = useState("Password.1");
+  const [cpassword, setCpassword] = useState("Password.1");
 
   //loading
   const [loading, setLoading] = useState(false);

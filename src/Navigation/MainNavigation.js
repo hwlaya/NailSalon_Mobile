@@ -14,6 +14,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import IndexScreen from "../screens/IndexScreen";
+import Booking from "../screens/Booking";
 import Profile from "../screens/Profile";
 import { Divider, Drawer } from "react-native-paper";
 import { UserContext } from "../providers/UserProvider";
@@ -154,6 +155,16 @@ const CustomDrawerContent = (props) => {
             navigation.navigate("Profile");
           }}
         />
+        <Drawer.Item
+          label="Booking"
+          active={active == "Booking"}
+          icon={() => (
+            <Icon name="calendar-heart" size={30} color={"#F8C5C5"} />
+          )}
+          onPress={() => {
+            navigation.navigate("Booking");
+          }}
+        />
       </Drawer.Section>
       <Drawer.Item
         label="Logout"
@@ -182,6 +193,13 @@ const DrawerStack = () => {
       <DrawerStackNav.Screen
         name="Profile"
         component={Profile}
+        options={{
+          header: () => <CustomHeader />,
+        }}
+      />
+      <DrawerStackNav.Screen
+        name="Booking"
+        component={Booking}
         options={{
           header: () => <CustomHeader />,
         }}
