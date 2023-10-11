@@ -22,8 +22,8 @@ const Login = () => {
   const navigation = useNavigation();
   const user = useContext(UserContext);
   const userProfile = useContext(UserContext);
-  const [email, setEmail] = useState("waynelaya08@gmail.com");
-  const [password, setPassword] = useState("Password.1");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmitLogin = () => {
@@ -32,7 +32,7 @@ const Login = () => {
       Alert.alert("Error!", "Please input your credentials!");
     } else {
       api
-        .post("api/login", {
+        .post("login", {
           email: email,
           password: password,
           isMobile: true,
