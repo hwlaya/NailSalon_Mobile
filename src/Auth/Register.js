@@ -12,22 +12,23 @@ import {
 import { Button, Text, TextInput, Card } from "react-native-paper";
 import axios from "axios";
 import Loading from "../components/Loading";
+import api from "../../config/api";
 // import Header from "../components/Header";
 
 // const screenHeight = Dimensions.get("window").height;
 
 const Register = () => {
   const navigation = useNavigation();
-  const [fname, setFname] = useState("Timmy");
-  const [mname, setMname] = useState("Santos");
-  const [lname, setLname] = useState("Turner");
-  const [bday, setBday] = useState("09/22/99");
-  const [address, setAddress] = useState("pasig");
-  const [phone, setPhone] = useState("09123456789");
-  const [uname, setUname] = useState("TimmyT");
-  const [email, setEmail] = useState("waynelaya08@gmail.com");
-  const [password, setPassword] = useState("Password.1");
-  const [cpassword, setCpassword] = useState("Password.1");
+  const [fname, setFname] = useState("");
+  const [mname, setMname] = useState("");
+  const [lname, setLname] = useState("");
+  const [bday, setBday] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [uname, setUname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cpassword, setCpassword] = useState("");
 
   //loading
   const [loading, setLoading] = useState(false);
@@ -40,8 +41,8 @@ const Register = () => {
         "Please make sure that your password is the same!"
       );
     } else {
-      axios
-        .post("http://192.168.100.30:8000/api/register", {
+      api
+        .post("register", {
           first_name: fname,
           middle_name: mname,
           last_name: lname,
