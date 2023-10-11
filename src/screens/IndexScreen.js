@@ -15,7 +15,7 @@ const IndexScreen = () => {
 
   useEffect(() => {
     api
-      .get("/api/services-page")
+      .get("services-page")
       .then((response) => {
         setServices(response.data.services);
         setProducts(response.data.products);

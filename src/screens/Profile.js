@@ -70,7 +70,7 @@ const Profile = () => {
       };
 
       api
-        .put(`/api/users/${user.user.id}`, updatedUserData)
+        .put(`users/${user.user.id}`, updatedUserData)
         .then((response) => {
           setLoading(false);
           if (response.data == true) {
@@ -104,7 +104,7 @@ const Profile = () => {
       console.log(newPasswordData);
 
       api
-        .post(`/api/update-password/${user.user.id}`, newPasswordData)
+        .post(`update-password/${user.user.id}`, newPasswordData)
         .then((response) => {
           setLoading(false);
           console.log(response.data);
