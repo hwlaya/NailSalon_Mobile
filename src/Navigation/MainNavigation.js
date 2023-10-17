@@ -1,4 +1,8 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useContext, useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
@@ -83,6 +87,7 @@ const BottomTabNavigation = () => {
 
 const CustomHeader = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   return (
     <View
       style={{
@@ -92,17 +97,35 @@ const CustomHeader = () => {
         justifyContent: "space-between",
       }}
     >
-      <TouchableOpacity
-        style={{ justifyContent: "center", marginTop: "7%" }}
-        onPress={() => navigation.dispatch(DrawerActions.openDrawer)}
-      >
-        <Icon name="menu" size={35} />
-      </TouchableOpacity>
-      <Image
-        source={require("../assets/images/logo_text.png")}
-        style={{ width: 125, height: 90, alignSelf: "center", marginRight: 30 }}
-      />
-      <View></View>
+      {route.name !== "Booking" ? (
+        <TouchableOpacity
+          style={{ justifyContent: "center", marginTop: "7%" }}
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer)}
+        >
+          <Icon name="menu" size={35} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={{ justifyContent: "center", marginTop: "7%" }}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name="arrow-left" size={35} />
+        </TouchableOpacity>
+      )}
+      {route.name !== "Booking" && (
+        <Image
+          source={require("../assets/images/logo_text.png")}
+          style={{
+            width: 125,
+            height: 90,
+            alignSelf: "center",
+            marginRight: 30,
+          }}
+        />
+      )}
+      <View>
+        <Text></Text>
+      </View>
     </View>
   );
 };
@@ -113,9 +136,9 @@ const CustomDrawerContent = (props) => {
   const navigation = useNavigation();
   return (
     <View>
-      <Drawer.Section title={`Menu`}>
+      <Drawer.Section style={{ paddingTop: 50 }}>
         <View style={{ flexDirection: "row" }}>
-          <View
+          {/* <View
             style={{
               backgroundColor: "#F8C5C5",
               paddingVertical: 15,
@@ -128,7 +151,7 @@ const CustomDrawerContent = (props) => {
             }}
           >
             <Icon name="account" size={50} color={"#fff"} />
-          </View>
+          </View> */}
           <View style={{ justifyContent: "center", marginLeft: 20 }}>
             <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20 }}>
               {user.user.first_name} {user.user.last_name}

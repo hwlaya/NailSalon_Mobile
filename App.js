@@ -12,6 +12,8 @@ import MainNavigation from "./src/Navigation/MainNavigation";
 import { PaperProvider } from "react-native-paper";
 import { UserProvider } from "./src/providers/UserProvider";
 import { useFonts } from "expo-font";
+import { ApplicationProvider } from "@ui-kitten/components";
+import * as eva from "@eva-design/eva";
 
 // function HomeScreen() {
 //   return (
@@ -35,11 +37,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <PaperProvider>
-        <UserProvider>
-          <MainNavigation />
-        </UserProvider>
-      </PaperProvider>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <PaperProvider>
+          <UserProvider>
+            <MainNavigation />
+          </UserProvider>
+        </PaperProvider>
+      </ApplicationProvider>
     </SafeAreaProvider>
   );
 }
