@@ -12,7 +12,8 @@ import MainNavigation from "./src/Navigation/MainNavigation";
 import { PaperProvider } from "react-native-paper";
 import { UserProvider } from "./src/providers/UserProvider";
 import { useFonts } from "expo-font";
-import Carousel from "react-native-snap-carousel";
+import { ApplicationProvider } from "@ui-kitten/components";
+import * as eva from "@eva-design/eva";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,11 +29,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <PaperProvider>
-        <UserProvider>
-          <MainNavigation />
-        </UserProvider>
-      </PaperProvider>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <PaperProvider>
+          <UserProvider>
+            <MainNavigation />
+          </UserProvider>
+        </PaperProvider>
+      </ApplicationProvider>
     </SafeAreaProvider>
   );
 }
