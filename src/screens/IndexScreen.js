@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, View, StyleSheet, ScrollView, Image } from "react-native";
+import {
+  Dimensions,
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import Header from "../components/Header";
 import { useRoute } from "@react-navigation/native";
 import api from "../../config/api";
@@ -83,11 +90,21 @@ const IndexScreen = () => {
               justifyContent: "center",
             }}
           >
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
+            {services.length > 0
+              ? services.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => console.log(item.service_name)}
+                      key={index}
+                      style={{ alignItems: "center" }}
+                    >
+                      <Card style={styles.cardStyle}></Card>
+                      <Text>{item.service_name}</Text>
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
           </View>
 
           <Text
