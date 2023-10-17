@@ -73,7 +73,9 @@ const Profile = () => {
         .put(`users/${user.user.id}`, updatedUserData)
         .then((response) => {
           setLoading(false);
-          if (response.data == true) {
+          if (response.data.success == "true") {
+            user.user = response.data.user;
+            user.userProfile = response.data.user_profile;
             Alert.alert(
               "Success!",
               "You have successfully edited your profile"
@@ -153,7 +155,7 @@ const Profile = () => {
             </View>
             <View style={{ justifyContent: "center", marginLeft: 20 }}>
               <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20 }}>
-                {user.user.first_name} {user.user.last_name}
+                {fname} {lname}
               </Text>
               <Text style={{ fontFamily: "Montserrat-Light" }}>
                 {user.user.email}
