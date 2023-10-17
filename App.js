@@ -12,14 +12,7 @@ import MainNavigation from "./src/Navigation/MainNavigation";
 import { PaperProvider } from "react-native-paper";
 import { UserProvider } from "./src/providers/UserProvider";
 import { useFonts } from "expo-font";
-
-// function HomeScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
+import Carousel from "react-native-snap-carousel";
 
 const Stack = createNativeStackNavigator();
 

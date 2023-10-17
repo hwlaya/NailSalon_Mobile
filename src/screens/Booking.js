@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Text } from "react-native-paper";
+import { Text, ProgressBar, MD3Colors } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import api from "../../config/api";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
@@ -28,6 +28,7 @@ const Booking = () => {
             {" "}
             Booking
           </Text>
+          <View></View>
         </View>
       </ScrollView>
     </View>
