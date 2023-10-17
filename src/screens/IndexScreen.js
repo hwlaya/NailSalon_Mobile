@@ -11,7 +11,7 @@ import Header from "../components/Header";
 import { useRoute } from "@react-navigation/native";
 import api from "../../config/api";
 import { Card, Text } from "react-native-paper";
-import Carousel from "react-native-snap-carousel";
+import Carousel, { Pagination } from "react-native-snap-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const IndexScreen = () => {
@@ -21,6 +21,7 @@ const IndexScreen = () => {
   const [products, setProducts] = useState([]);
   const [productsAddOns, setProductAddOns] = useState([]);
   const [packages, setPackages] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     api
@@ -48,12 +49,35 @@ const IndexScreen = () => {
     },
   ];
 
+  const pagination = (
+    <Pagination
+      dotsLength={carouselItems.length}
+      activeDotIndex={activeIndex}
+      containerStyle={{ backgroundColor: "transparent", paddingBottom: 0 }}
+      dotStyle={{
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginHorizontal: 0,
+        backgroundColor: "rgba(122, 122, 122, 0.92)",
+      }}
+      inactiveDotStyle={{
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginHorizontal: 0,
+        backgroundColor: "rgba(122, 122, 122, 0.80)",
+      }}
+      inactiveDotOpacity={0.4}
+      inactiveDotScale={0.6}
+    />
+  );
   const _renderCarouselItem = ({ item, index }) => {
     return (
       <View style={styles.carouselItem}>
         <Image
           source={item.image}
-          style={{ width: 280, height: 120, alignSelf: "center" }}
+          style={{ width: 400, height: 150, alignSelf: "center" }}
         />
       </View>
     );
@@ -70,12 +94,14 @@ const IndexScreen = () => {
             sliderWidth={Dimensions.get("window").width}
             itemWidth={400}
             renderItem={_renderCarouselItem}
+            onSnapToItem={(index) => setActiveIndex(index)}
           />
+          {pagination}
           <Text
             variant="headlineLarge"
             style={{
               paddingLeft: "5%",
-              marginTop: "8%",
+              marginTop: "1%",
               marginBottom: "5%",
               fontFamily: "Montserrat-Medium",
             }}
@@ -193,6 +219,11 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 20,
     margin: 10,
+  },
+  pagination: {
+    position: "absolute",
+    bottom: 10,
+    alignSelf: "center",
   },
 });
 
