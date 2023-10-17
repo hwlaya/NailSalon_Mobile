@@ -15,14 +15,6 @@ import { useFonts } from "expo-font";
 import { ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
 
-// function HomeScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
