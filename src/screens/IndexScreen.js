@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Header from "../components/Header";
+// import Header from "../components/Header";
 import { useRoute } from "@react-navigation/native";
 import api from "../../config/api";
 import { Card, Text } from "react-native-paper";
@@ -180,7 +180,7 @@ const IndexScreen = () => {
                 return (
                   <Card key={index}>
                     <Text>{item.product_name}</Text>
-                    <Text>{item.price}</Text>
+                    <Text>{}</Text>
                   </Card>
                 );
               })

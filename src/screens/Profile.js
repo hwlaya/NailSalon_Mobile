@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Alert, ScrollView } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
@@ -8,6 +7,7 @@ import Loading from "../components/Loading";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import api from "../../config/api";
+import axios from "axios";
 
 const Profile = () => {
   const navigation = useNavigation();

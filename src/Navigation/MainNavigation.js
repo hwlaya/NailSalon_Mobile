@@ -14,7 +14,7 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import IndexScreen from "../screens/IndexScreen";
@@ -25,65 +25,65 @@ import { UserContext } from "../providers/UserProvider";
 
 const AuthStack = createNativeStackNavigator();
 const DrawerStackNav = createDrawerNavigator();
-const BottomTab = createMaterialBottomTabNavigator();
+// const BottomTab = createMaterialBottomTabNavigator();
 
-const BottomTabNavigation = () => {
-  return (
-    <BottomTab.Navigator
-      tabBar={({ navigation, state, descriptors, insets }) => (
-        <BottomNavigation.Bar
-          navigationState={state}
-          safeAreaInsets={insets}
-          onTabPress={({ route, preventDefault }) => {
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
+// const BottomTabNavigation = () => {
+//   return (
+//     <BottomTab.Navigator
+//       tabBar={({ navigation, state, descriptors, insets }) => (
+//         <BottomNavigation.Bar
+//           navigationState={state}
+//           safeAreaInsets={insets}
+//           onTabPress={({ route, preventDefault }) => {
+//             const event = navigation.emit({
+//               type: "tabPress",
+//               target: route.key,
+//               canPreventDefault: true,
+//             });
 
-            if (event.defaultPrevented) {
-              preventDefault();
-            } else {
-              navigation.dispatch({
-                ...CommonActions.navigate(route.name, route.params),
-                target: state.key,
-              });
-            }
-          }}
-          renderIcon={({ route, focused, color }) => {
-            const { options } = descriptors[route.key];
-            if (options.tabBarIcon) {
-              return options.tabBarIcon({ focused, color, size: 24 });
-            }
+//             if (event.defaultPrevented) {
+//               preventDefault();
+//             } else {
+//               navigation.dispatch({
+//                 ...CommonActions.navigate(route.name, route.params),
+//                 target: state.key,
+//               });
+//             }
+//           }}
+//           renderIcon={({ route, focused, color }) => {
+//             const { options } = descriptors[route.key];
+//             if (options.tabBarIcon) {
+//               return options.tabBarIcon({ focused, color, size: 24 });
+//             }
 
-            return null;
-          }}
-          getLabelText={({ route }) => {
-            const { options } = descriptors[route.key];
-            const label =
-              options.tabBarLabel !== undefined
-                ? options.tabBarLabel
-                : options.title !== undefined
-                ? options.title
-                : route.title;
+//             return null;
+//           }}
+//           getLabelText={({ route }) => {
+//             const { options } = descriptors[route.key];
+//             const label =
+//               options.tabBarLabel !== undefined
+//                 ? options.tabBarLabel
+//                 : options.title !== undefined
+//                 ? options.title
+//                 : route.title;
 
-            return label;
-          }}
-        />
-      )}
-    >
-      <BottomTab.Screen
-        name="Home"
-        component={IndexScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            <Icon name="home" size={size} color={color} />;
-          },
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-};
+//             return label;
+//           }}
+//         />
+//       )}
+//     >
+//       <BottomTab.Screen
+//         name="Home"
+//         component={IndexScreen}
+//         options={{
+//           tabBarIcon: ({ color, size }) => {
+//             <Icon name="home" size={size} color={color} />;
+//           },
+//         }}
+//       />
+//     </BottomTab.Navigator>
+//   );
+// };
 
 const CustomHeader = () => {
   const navigation = useNavigation();
@@ -167,7 +167,7 @@ const CustomDrawerContent = (props) => {
           active={active === "Home"}
           icon={() => <Icon name="home" size={30} color={"#F8C5C5"} />}
           onPress={() => {
-            navigation.navigate("BottomNav");
+            navigation.navigate("IndexScreen");
           }}
         />
         <Drawer.Item
@@ -206,9 +206,17 @@ const DrawerStack = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       drawerStyle={{ backgroundColor: "white" }}
     >
-      <DrawerStackNav.Screen
+      {/* <DrawerStackNav.Screen
         name="BottomNav"
         component={BottomTabNavigation}
+        options={{
+          header: () => <CustomHeader />,
+        }}
+
+      /> */}
+      <DrawerStackNav.Screen
+        name="IndexScreen"
+        component={IndexScreen}
         options={{
           header: () => <CustomHeader />,
         }}
