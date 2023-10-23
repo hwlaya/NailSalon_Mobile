@@ -23,6 +23,14 @@ const IndexScreen = () => {
   const [packages, setPackages] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const serviceImages = {
+    "General Service": require("../assets/images/general_service.jpg"),
+    "Nail Extension": require("../assets/images/nail_extension.jpg"),
+    Waxing: require("../assets/images/waxing.jpg"),
+    Eyelash: require("../assets/images/eyelash.jpg"),
+    "Eyelash Extensions": require("../assets/images/eyelash_extension.jpg"),
+  };
+
   useEffect(() => {
     api
       .get("services-page")
@@ -118,15 +126,17 @@ const IndexScreen = () => {
           >
             {services.length > 0
               ? services.map((item, index) => {
+                  const serviceName = item.service_name;
+                  const serviceImage = serviceImages[serviceName];
                   return (
                     <TouchableOpacity
                       activeOpacity={1}
-                      onPress={() => console.log(item.service_name)}
+                      onPress={() => console.log(serviceName)}
                       key={index}
                       style={{ alignItems: "center" }}
                     >
-                      <Card style={styles.cardStyle}></Card>
-                      <Text>{item.service_name}</Text>
+                      <Image source={serviceImage} style={styles.cardImage} />
+                      <Text>{serviceName}</Text>
                     </TouchableOpacity>
                   );
                 })
@@ -152,18 +162,21 @@ const IndexScreen = () => {
               justifyContent: "center",
             }}
           >
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
-            <Card style={styles.cardStyle}></Card>
+            {packages.length > 0
+              ? packages.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => console.log(item.package_name)}
+                      key={index}
+                      style={{ alignItems: "center" }}
+                    >
+                      <Card style={styles.cardStyle}></Card>
+                      <Text>{item.package_name}</Text>
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
           </View>
 
           {services.length > 0
@@ -177,12 +190,14 @@ const IndexScreen = () => {
             : null}
           {products.length > 0
             ? products.map((item, index) => {
-                return (
-                  <Card key={index}>
-                    <Text>{item.product_name}</Text>
-                    <Text>{}</Text>
-                  </Card>
-                );
+                if ((index >= 0, index <= 11)) {
+                  return (
+                    <View key={index}>
+                      <Text>{item.product_name}</Text>
+                      <Text>{item.price}</Text>
+                    </View>
+                  );
+                }
               })
             : null}
         </View>
@@ -215,6 +230,12 @@ const styles = StyleSheet.create({
     // marginRight: 25,
   },
   cardStyle: {
+    width: 120,
+    height: 120,
+    borderRadius: 20,
+    margin: 10,
+  },
+  cardImage: {
     width: 120,
     height: 120,
     borderRadius: 20,
