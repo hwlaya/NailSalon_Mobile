@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TouchableOpacity,
   View,
@@ -9,10 +9,11 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { Button, Text, TextInput, Card } from "react-native-paper";
+import { Button, Text, TextInput, Card, HelperText } from "react-native-paper";
 import axios from "axios";
 import Loading from "../components/Loading";
 import api from "../../config/api";
+import moment from "moment";
 // import Header from "../components/Header";
 
 // const screenHeight = Dimensions.get("window").height;
@@ -29,6 +30,31 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
+  //Helper
+  const [errorhelper, setErrorHelper] = useState(false);
+  const [isDateOfBirthValid, setIsDateOfBirthValid] = useState(false);
+
+  const validateDateOfBirth = (dateString) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    const isValid = regex.test(dateString);
+    setIsDateOfBirthValid(isValid);
+    return isValid;
+  };
+
+  useEffect(() => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (phone[0] == 0 || phone.length > 11) {
+      setErrorHelper(true);
+    } else {
+      setErrorHelper(false);
+    }
+
+    const isValid = regex.test(bday);
+    setIsDateOfBirthValid(isValid);
+
+    console.log(bday);
+    console.log(isValid);
+  }, [phone, bday]);
 
   //loading
   const [loading, setLoading] = useState(false);
@@ -40,13 +66,23 @@ const Register = () => {
         "Password Mismatch!",
         "Please make sure that your password is the same!"
       );
+      setLoading(false);
+    } else if (!isDateOfBirthValid) {
+      Alert.alert("Invalid Format!", "Date format must be YYYY-MM-DD");
+      setLoading(false);
+    } else if (errorhelper) {
+      Alert.alert(
+        "Invalid Phone format",
+        "Must be 10 characters and first character must be not 0"
+      );
+      setLoading(false);
     } else {
       api
         .post("register", {
           first_name: fname,
           middle_name: mname,
           last_name: lname,
-          birthday: bday,
+          birthday: moment(bday).format("YYYY-MM-DD"),
           contact_no: phone,
           email: email,
           username: uname,
@@ -55,6 +91,7 @@ const Register = () => {
           address: address,
           is_notify: false,
         })
+
         .then((response) => {
           setLoading(false);
           Alert.alert(
@@ -156,7 +193,9 @@ const Register = () => {
                 outlineColor="#000"
                 activeOutlineColor="#F8C5C5"
                 value={bday}
-                onChangeText={(value) => setBday(value)}
+                onChangeText={(value) => {
+                  setBday(value);
+                }}
                 label={`Date of Birth`}
                 style={{
                   backgroundColor: "transparent",
@@ -164,6 +203,11 @@ const Register = () => {
                   alignSelf: "center",
                 }}
               />
+              {!isDateOfBirthValid && (
+                <HelperText type="error" visible={!isDateOfBirthValid}>
+                  Invalid date format (YYYY-MM-DD)
+                </HelperText>
+              )}
 
               <TextInput
                 mode="outlined"
@@ -185,12 +229,18 @@ const Register = () => {
                 activeOutlineColor="#F8C5C5"
                 value={phone}
                 onChangeText={(value) => setPhone(value)}
+                keyboardType="numeric"
                 label={`Contact Number`}
                 style={{
                   width: "90%",
                   alignSelf: "center",
                 }}
               />
+              {errorhelper && (
+                <HelperText type="error" visible={errorhelper}>
+                  Invalid Phone Nnumber Format
+                </HelperText>
+              )}
 
               <TextInput
                 mode="outlined"

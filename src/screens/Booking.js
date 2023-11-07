@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { ProgressBar, Card } from "react-native-paper";
+import { ProgressBar, Card, Button } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import api from "../../config/api";
 import RNDateTimePicker, {
@@ -36,16 +36,26 @@ const Booking = () => {
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [staff, setStaff] = useState();
+  const [timeIn, setTimeIn] = useState("");
+  const [timeOut, setTimeOut] = useState("");
   const [selectedBranch, setSelectedBranch] = useState(new IndexPath(0));
   const displayValue = options[selectedBranch.row];
 
   const [services, setServices] = useState([]);
   const [products, setProducts] = useState([]);
+  const [productsAndPackages, setProductsAndPackages] = useState([]);
   const [productsAddOns, setProductAddOns] = useState([]);
   const [packages, setPackages] = useState([]);
+
   const [selectedService, setSelectedService] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [testProduct, setTestProduct] = useState(new IndexPath(0));
+  const [productValue, setProductValue] = useState("");
+  const [productValue1, setProductValue1] = useState("");
+  const [productValue2, setProductValue2] = useState("");
   const [selectedPackage, setSelectedPackage] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     api
@@ -55,17 +65,44 @@ const Booking = () => {
         setProducts(response.data.products);
         setProductAddOns(response.data.products_add_ons);
         setPackages(response.data.packages);
+
+        const tempProducts = response.data.products;
+        const tempPackages = response.data.packages;
+
+        let tempAllProductsAndPackage = [];
+
+        tempProducts.map((item, index) => {
+          tempAllProductsAndPackage.push(item);
+        });
+
+        tempPackages.map((item, index) => {
+          tempAllProductsAndPackage.push(item);
+        });
+
+        setProductsAndPackages(tempAllProductsAndPackage);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    const price = parseFloat(productValue.split("₱")[1]) || 0;
+    const price1 = parseFloat(productValue1.split("₱")[1]) || 0;
+    const price2 = parseFloat(productValue2.split("₱")[1]) || 0;
+
+    const tempPrice = price + price1 + price2;
+    setTotalPrice(tempPrice);
+  }, [productValue, productValue1, productValue2]);
+
+  const calculateTotalPrice = () => {
+    console.log("Total Price:", totalPrice);
+  };
 
   return (
     <View style={styles.container}>
       <ProgressBar
         color="#F8C5C5"
-        // progress={progress}
         animatedValue={progress}
         style={{ backgroundColor: "#fff2d1" }}
       />
@@ -77,14 +114,11 @@ const Booking = () => {
               <Datepicker
                 label={`Choose a Date`}
                 min={moment().add(1, "days").toDate()}
-                // renderDay={renderDay}
-                onSelect={(date) => setSelectedDate(date)}
+                date={selectedDate}
+                onSelect={(date) => {
+                  setSelectedDate(date);
+                }}
               />
-              {selectedDate && (
-                <View style={{ marginTop: 10 }}>
-                  <Text>{moment(selectedDate).format("DD MM, YYYY")}</Text>
-                </View>
-              )}
               <TouchableOpacity
                 onPress={() => {
                   setTimePickerVisible(true);
@@ -235,33 +269,286 @@ const Booking = () => {
                   </View>
                 </View>
               </Card>
-              <View>
-                <Layout style={{ marginTop: 20 }}>
-                  <Select
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Card style={styles.cardStyle}>
+                  <View
                     style={{
-                      width: 380,
-                      height: 400,
-                      alignSelf: "flex-start",
-                      padding: 10,
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      justifyContent: "space-evenly",
                     }}
-                    label="Select a Service"
-                    alignment="start"
-                    value={selectedService}
-                    onSelect={(index) =>
-                      setSelectedService(services[index.row])
-                    }
                   >
-                    {services.map((service, index) => (
-                      <SelectItem key={index} title={service.service_name} />
-                    ))}
-                  </Select>
-                </Layout>
+                    <View>
+                      <Text category="h6">Package A</Text>
+                      {packages.length > 0
+                        ? packages.map((item, index) => {
+                            return (
+                              <View key={index}>
+                                <Text>
+                                  {item.package_name}
+                                  {item.price}
+                                </Text>
+                              </View>
+                            );
+                          })
+                        : null}
+                    </View>
+                    <View>
+                      <Text category="h6"> Nail Extension</Text>
+                      {products.length > 0
+                        ? products.map((item, index) => {
+                            if (index >= 12 && index <= 16) {
+                              return (
+                                <View key={index}>
+                                  <Text>
+                                    {item.product_name} {item.price}
+                                  </Text>
+                                </View>
+                              );
+                            }
+                          })
+                        : null}
+                    </View>
+                    <View>
+                      <Text category="h6"> Waxing</Text>
+                      {products.length > 0
+                        ? products.map((item, index) => {
+                            if (index >= 17 && index <= 22) {
+                              return (
+                                <View key={index}>
+                                  <Text>
+                                    {item.product_name} {item.price}
+                                  </Text>
+                                </View>
+                              );
+                            }
+                          })
+                        : null}
+                    </View>
+                    <View>
+                      <Text category="h6"> Eyelash</Text>
+                      {products.length > 0
+                        ? products.map((item, index) => {
+                            if (index >= 23 && index <= 24) {
+                              return (
+                                <View key={index}>
+                                  <Text>
+                                    {item.product_name} {item.price}
+                                  </Text>
+                                </View>
+                              );
+                            }
+                          })
+                        : null}
+                    </View>
+                    <View>
+                      <Text category="h6"> Eyelash Extension</Text>
+                      {products.length > 0
+                        ? products.map((item, index) => {
+                            if (index >= 25 && index <= 27) {
+                              return (
+                                <View key={index}>
+                                  <Text>
+                                    {item.product_name} {item.price}
+                                  </Text>
+                                </View>
+                              );
+                            }
+                          })
+                        : null}
+                    </View>
+                  </View>
+                </Card>
+                <View>
+                  <Layout style={{ marginTop: 20 }}>
+                    <Select
+                      style={{
+                        width: 380,
+                        alignSelf: "flex-start",
+                        padding: 10,
+                      }}
+                      label="Select a Service"
+                      alignment="start"
+                      value={
+                        productValue ||
+                        (selectedProduct
+                          ? selectedProduct.product_name !== undefined
+                            ? selectedProduct.product_name
+                            : selectedProduct.package_name !== undefined
+                            ? selectedProduct.package_name
+                            : null
+                          : "")
+                      }
+                      onSelect={(index) => {
+                        console.log(productsAndPackages[index - 1]);
+                        const selected = productsAndPackages[index - 1];
+                        setSelectedProduct(selected);
+                        setProductValue(
+                          `${
+                            selected.product_name !== undefined
+                              ? selected.product_name
+                              : selected.package_name !== undefined
+                              ? selected.package_name
+                              : null
+                          } ₱${selected.price}`
+                        );
+
+                        // console.log(productValue);
+                      }}
+                    >
+                      {/* <SelectItem title="None" /> */}
+                      {products.map((product, index) => (
+                        <SelectItem key={index} title={product.product_name} />
+                      ))}
+                      {packages.map((packages, index) => {
+                        return (
+                          <SelectItem
+                            key={products.length + index}
+                            title={packages.package_name}
+                          />
+                        );
+                      })}
+                    </Select>
+                    <Select
+                      style={{
+                        width: 380,
+                        alignSelf: "flex-start",
+                        padding: 10,
+                      }}
+                      label="Select a Service"
+                      alignment="start"
+                      value={
+                        productValue1 ||
+                        (selectedProduct
+                          ? selectedProduct.product_name !== undefined
+                            ? selectedProduct.product_name
+                            : selectedProduct.package_name !== undefined
+                            ? selectedProduct.package_name
+                            : null
+                          : "")
+                      }
+                      onSelect={(index) => {
+                        console.log(productsAndPackages[index - 1]);
+                        const selected = productsAndPackages[index - 1];
+                        setSelectedProduct(selected);
+                        setProductValue1(
+                          `${
+                            selected.product_name !== undefined
+                              ? selected.product_name
+                              : selected.package_name !== undefined
+                              ? selected.package_name
+                              : null
+                          } ₱${selected.price}`
+                        );
+
+                        // console.log(productValue1);
+                      }}
+                    >
+                      {products.map((product, index) => (
+                        <SelectItem key={index} title={product.product_name} />
+                      ))}
+                      {packages.map((packages, index) => {
+                        return (
+                          <SelectItem
+                            key={products.length + index}
+                            title={packages.package_name}
+                          />
+                        );
+                      })}
+                    </Select>
+                    <Select
+                      style={{
+                        width: 380,
+                        alignSelf: "flex-start",
+                        padding: 10,
+                      }}
+                      label="Select a Service"
+                      alignment="start"
+                      value={
+                        productValue2 ||
+                        (selectedProduct
+                          ? selectedProduct.product_name !== undefined
+                            ? selectedProduct.product_name
+                            : selectedProduct.package_name !== undefined
+                            ? selectedProduct.package_name
+                            : null
+                          : "")
+                      }
+                      onSelect={(index) => {
+                        console.log(productsAndPackages[index - 1]);
+                        const selected = productsAndPackages[index - 1];
+                        setSelectedProduct(selected);
+                        setProductValue2(
+                          `${
+                            selected.product_name !== undefined
+                              ? selected.product_name
+                              : selected.package_name !== undefined
+                              ? selected.package_name
+                              : null
+                          } ₱${selected.price}`
+                        );
+
+                        // console.log(productValue2);
+                      }}
+                    >
+                      {products.map((product, index) => (
+                        <SelectItem key={index} title={product.product_name} />
+                      ))}
+                      {packages.map((packages, index) => {
+                        return (
+                          <SelectItem
+                            key={products.length + index}
+                            title={packages.package_name}
+                          />
+                        );
+                      })}
+                    </Select>
+                  </Layout>
+                </View>
+              </View>
+              {/* Display the total price */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  width: "93%",
+                }}
+              >
+                <Text category="h6">Total: ₱{totalPrice}</Text>
               </View>
             </View>
           </View>
         ) : page === 3 ? (
           <View style={styles.bodyContainer}>
-            <Text>Page 3</Text>
+            {staff.length > 0 &&
+              staff.map((item, index) => {
+                return (
+                  <View key={index}>
+                    <Card style={styles.tcardStyle}></Card>
+                    <Button
+                      mode="contained"
+                      buttonColor="#f9e2e1"
+                      style={{
+                        marginTop: 15,
+                        borderRadius: 5,
+                        width: "40%",
+                        height: 45,
+                        justifyContent: "center",
+                        alignItems: "centser",
+                      }}
+                      onPress={() => {
+                        console.log(item);
+                      }}
+                    ></Button>
+                  </View>
+                );
+              })}
           </View>
         ) : (
           <View style={styles.bodyContainer}>
@@ -319,6 +606,52 @@ const Booking = () => {
               setPage(page + 1);
               setProgress(tempProgress);
             }
+
+            if (page === 1) {
+              let date = moment(selectedDate).format("YYYY-MM-DD");
+
+              const time = moment(selectedTime, "hh:mm A").format("hh:mm:ss");
+              const datetime = `${date}T${time}`; //ISO
+              setTimeIn(
+                `${moment(selectedDate).format("YYYY-MM-DD")} ${selectedTime}`
+              );
+              setTimeOut(
+                moment(datetime)
+                  .add(1, "hour")
+                  .add(30, "minutes")
+                  .format(`YYYY-MM-DD hh:mm A`)
+              );
+              console.log(
+                `${moment(selectedDate).format("YYYY-MM-DD")} ${selectedTime}`
+              );
+              console.log(
+                moment(datetime)
+                  .add(1, "hour")
+                  .add(30, "minutes")
+                  .format(`YYYY-MM-DD hh:mm A`)
+              );
+
+              api
+                .get("getAvailableStaff", {
+                  params: {
+                    time_in: `${moment(selectedDate).format(
+                      "YYYY-MM-DD"
+                    )} ${selectedTime}`,
+                    time_out: moment(datetime)
+                      .add(1, "hour")
+                      .add(30, "minutes")
+                      .format(`YYYY-MM-DD hh:mm A`),
+                    serviceType1: 1,
+                    serviceType2: 1,
+                    serviceType3: 1,
+                    userId: 3,
+                  },
+                })
+                .then((response) => {
+                  setStaff(response.data.staff);
+                  console.log(response.data.staff);
+                });
+            }
           }}
         >
           <Text style={{ color: "#fff" }}>Next</Text>
@@ -346,6 +679,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: 380,
     height: 390,
+    borderRadius: 20,
+    margin: 10,
+  },
+  tcardStyle: {
+    flexDirection: "row",
+    width: 170,
+    height: 300,
     borderRadius: 20,
     margin: 10,
   },

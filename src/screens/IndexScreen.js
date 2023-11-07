@@ -178,28 +178,6 @@ const IndexScreen = () => {
                 })
               : null}
           </View>
-
-          {services.length > 0
-            ? services.map((item, index) => {
-                return (
-                  <Card key={index}>
-                    <Text>{item.service_name}</Text>
-                  </Card>
-                );
-              })
-            : null}
-          {products.length > 0
-            ? products.map((item, index) => {
-                if ((index >= 0, index <= 11)) {
-                  return (
-                    <View key={index}>
-                      <Text>{item.product_name}</Text>
-                      <Text>{item.price}</Text>
-                    </View>
-                  );
-                }
-              })
-            : null}
         </View>
       </ScrollView>
     </SafeAreaView>

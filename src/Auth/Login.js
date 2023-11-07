@@ -22,8 +22,8 @@ const Login = () => {
   const navigation = useNavigation();
   const user = useContext(UserContext);
   const userProfile = useContext(UserContext);
-  const [email, setEmail] = useState("waynelaya08@gmail.com");
-  const [password, setPassword] = useState("Password.1");
+  const [email, setEmail] = useState("tylerc08@gmail.com");
+  const [password, setPassword] = useState("password");
   const [loading, setLoading] = useState(false);
 
   const onSubmitLogin = () => {
