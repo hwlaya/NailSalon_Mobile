@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
 import { ProgressBar, Card, Button } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
@@ -23,20 +24,25 @@ import {
   Select,
   SelectItem,
   Text,
+  Radio,
+  RadioGroup,
+  useTheme,
 } from "@ui-kitten/components";
 import moment from "moment";
 
-const options = ["Branch 1", "Branch 2", "Branch 3"];
+const options = ["Sampaloc Manila", "Quezon City"];
 
 const Booking = () => {
   const route = useRoute();
+  const theme = useTheme();
 
   const [progress, setProgress] = useState(0.25);
   const [page, setPage] = useState(1);
   const [timePickerVisible, setTimePickerVisible] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [staff, setStaff] = useState();
+  const [staff, setStaff] = useState(0);
+  const [selectedStaff, setSelectedStaff] = useState();
   const [timeIn, setTimeIn] = useState("");
   const [timeOut, setTimeOut] = useState("");
   const [selectedBranch, setSelectedBranch] = useState(new IndexPath(0));
@@ -56,6 +62,7 @@ const Booking = () => {
   const [productValue2, setProductValue2] = useState("");
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     api
@@ -109,8 +116,9 @@ const Booking = () => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {page === 1 ? (
           <View style={styles.bodyContainer}>
+            <Text style={styles.textStyle}> Pick Schedule and Branch</Text>
             <WeeklyCalendar style={{ height: 300 }} />
-            <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+            <View style={{ paddingHorizontal: 20, paddingVertical: 12 }}>
               <Datepicker
                 label={`Choose a Date`}
                 min={moment().add(1, "days").toDate()}
@@ -173,6 +181,7 @@ const Booking = () => {
           </View>
         ) : page === 2 ? (
           <View style={styles.bodyContainer}>
+            <Text style={styles.textStyle}> Choose Services</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -269,247 +278,177 @@ const Booking = () => {
                   </View>
                 </View>
               </Card>
+
+              <Card style={styles.packagecardStyle}>
+                <View style={{ flexDirection: "column" }}>
+                  {packages.map((item, index) => {
+                    return (
+                      <View key={index} style={styles.packageContainer}>
+                        <Text category="h6">{item.package_name}</Text>
+                        <Text>Price: {item.price}</Text>
+                        <View style={styles.productContainer}>
+                          {item.products.map((product, productIndex) => (
+                            <View key={productIndex} style={styles.productItem}>
+                              <Text>{product.product_name}</Text>
+                              <Text></Text>
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    );
+                  })}
+                </View>
+              </Card>
               <View
                 style={{
                   flexDirection: "row",
                   flexWrap: "wrap",
                 }}
               >
-                <Card style={styles.cardStyle}>
-                  <View
+                <Layout style={{ marginTop: 20 }}>
+                  <Select
                     style={{
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      justifyContent: "space-evenly",
+                      width: 380,
+                      alignSelf: "flex-start",
+                      padding: 10,
+                    }}
+                    label="Select a Service"
+                    alignment="start"
+                    value={
+                      productValue ||
+                      (selectedProduct
+                        ? selectedProduct.product_name !== undefined
+                          ? selectedProduct.product_name
+                          : selectedProduct.package_name !== undefined
+                          ? selectedProduct.package_name
+                          : null
+                        : "")
+                    }
+                    onSelect={(index) => {
+                      console.log(productsAndPackages[index - 1]);
+                      const selected = productsAndPackages[index - 1];
+                      setSelectedProduct(selected);
+                      setProductValue(
+                        `${
+                          selected.product_name !== undefined
+                            ? selected.product_name
+                            : selected.package_name !== undefined
+                            ? selected.package_name
+                            : null
+                        } ₱${selected.price}`
+                      );
+
+                      // console.log(productValue);
                     }}
                   >
-                    <View>
-                      <Text category="h6">Package A</Text>
-                      {packages.length > 0
-                        ? packages.map((item, index) => {
-                            return (
-                              <View key={index}>
-                                <Text>
-                                  {item.package_name}
-                                  {item.price}
-                                </Text>
-                              </View>
-                            );
-                          })
-                        : null}
-                    </View>
-                    <View>
-                      <Text category="h6"> Nail Extension</Text>
-                      {products.length > 0
-                        ? products.map((item, index) => {
-                            if (index >= 12 && index <= 16) {
-                              return (
-                                <View key={index}>
-                                  <Text>
-                                    {item.product_name} {item.price}
-                                  </Text>
-                                </View>
-                              );
-                            }
-                          })
-                        : null}
-                    </View>
-                    <View>
-                      <Text category="h6"> Waxing</Text>
-                      {products.length > 0
-                        ? products.map((item, index) => {
-                            if (index >= 17 && index <= 22) {
-                              return (
-                                <View key={index}>
-                                  <Text>
-                                    {item.product_name} {item.price}
-                                  </Text>
-                                </View>
-                              );
-                            }
-                          })
-                        : null}
-                    </View>
-                    <View>
-                      <Text category="h6"> Eyelash</Text>
-                      {products.length > 0
-                        ? products.map((item, index) => {
-                            if (index >= 23 && index <= 24) {
-                              return (
-                                <View key={index}>
-                                  <Text>
-                                    {item.product_name} {item.price}
-                                  </Text>
-                                </View>
-                              );
-                            }
-                          })
-                        : null}
-                    </View>
-                    <View>
-                      <Text category="h6"> Eyelash Extension</Text>
-                      {products.length > 0
-                        ? products.map((item, index) => {
-                            if (index >= 25 && index <= 27) {
-                              return (
-                                <View key={index}>
-                                  <Text>
-                                    {item.product_name} {item.price}
-                                  </Text>
-                                </View>
-                              );
-                            }
-                          })
-                        : null}
-                    </View>
-                  </View>
-                </Card>
-                <View>
-                  <Layout style={{ marginTop: 20 }}>
-                    <Select
-                      style={{
-                        width: 380,
-                        alignSelf: "flex-start",
-                        padding: 10,
-                      }}
-                      label="Select a Service"
-                      alignment="start"
-                      value={
-                        productValue ||
-                        (selectedProduct
-                          ? selectedProduct.product_name !== undefined
-                            ? selectedProduct.product_name
-                            : selectedProduct.package_name !== undefined
-                            ? selectedProduct.package_name
+                    {/* <SelectItem title="None" /> */}
+                    {products.map((product, index) => (
+                      <SelectItem key={index} title={product.product_name} />
+                    ))}
+                    {packages.map((packages, index) => {
+                      return (
+                        <SelectItem
+                          key={products.length + index}
+                          title={packages.package_name}
+                        />
+                      );
+                    })}
+                  </Select>
+                  <Select
+                    style={{
+                      width: 380,
+                      alignSelf: "flex-start",
+                      padding: 10,
+                    }}
+                    label="Select a Service"
+                    alignment="start"
+                    value={
+                      productValue1 ||
+                      (selectedProduct
+                        ? selectedProduct.product_name !== undefined
+                          ? selectedProduct.product_name
+                          : selectedProduct.package_name !== undefined
+                          ? selectedProduct.package_name
+                          : null
+                        : "")
+                    }
+                    onSelect={(index) => {
+                      console.log(productsAndPackages[index - 1]);
+                      const selected = productsAndPackages[index - 1];
+                      setSelectedProduct(selected);
+                      setProductValue1(
+                        `${
+                          selected.product_name !== undefined
+                            ? selected.product_name
+                            : selected.package_name !== undefined
+                            ? selected.package_name
                             : null
-                          : "")
-                      }
-                      onSelect={(index) => {
-                        console.log(productsAndPackages[index - 1]);
-                        const selected = productsAndPackages[index - 1];
-                        setSelectedProduct(selected);
-                        setProductValue(
-                          `${
-                            selected.product_name !== undefined
-                              ? selected.product_name
-                              : selected.package_name !== undefined
-                              ? selected.package_name
-                              : null
-                          } ₱${selected.price}`
-                        );
+                        } ₱${selected.price}`
+                      );
 
-                        // console.log(productValue);
-                      }}
-                    >
-                      {/* <SelectItem title="None" /> */}
-                      {products.map((product, index) => (
-                        <SelectItem key={index} title={product.product_name} />
-                      ))}
-                      {packages.map((packages, index) => {
-                        return (
-                          <SelectItem
-                            key={products.length + index}
-                            title={packages.package_name}
-                          />
-                        );
-                      })}
-                    </Select>
-                    <Select
-                      style={{
-                        width: 380,
-                        alignSelf: "flex-start",
-                        padding: 10,
-                      }}
-                      label="Select a Service"
-                      alignment="start"
-                      value={
-                        productValue1 ||
-                        (selectedProduct
-                          ? selectedProduct.product_name !== undefined
-                            ? selectedProduct.product_name
-                            : selectedProduct.package_name !== undefined
-                            ? selectedProduct.package_name
+                      // console.log(productValue1);
+                    }}
+                  >
+                    {products.map((product, index) => (
+                      <SelectItem key={index} title={product.product_name} />
+                    ))}
+                    {packages.map((packages, index) => {
+                      return (
+                        <SelectItem
+                          key={products.length + index}
+                          title={packages.package_name}
+                        />
+                      );
+                    })}
+                  </Select>
+                  <Select
+                    style={{
+                      width: 380,
+                      alignSelf: "flex-start",
+                      padding: 10,
+                    }}
+                    label="Select a Service"
+                    alignment="start"
+                    value={
+                      productValue2 ||
+                      (selectedProduct
+                        ? selectedProduct.product_name !== undefined
+                          ? selectedProduct.product_name
+                          : selectedProduct.package_name !== undefined
+                          ? selectedProduct.package_name
+                          : null
+                        : "")
+                    }
+                    onSelect={(index) => {
+                      console.log(productsAndPackages[index - 1]);
+                      const selected = productsAndPackages[index - 1];
+                      setSelectedProduct(selected);
+                      setProductValue2(
+                        `${
+                          selected.product_name !== undefined
+                            ? selected.product_name
+                            : selected.package_name !== undefined
+                            ? selected.package_name
                             : null
-                          : "")
-                      }
-                      onSelect={(index) => {
-                        console.log(productsAndPackages[index - 1]);
-                        const selected = productsAndPackages[index - 1];
-                        setSelectedProduct(selected);
-                        setProductValue1(
-                          `${
-                            selected.product_name !== undefined
-                              ? selected.product_name
-                              : selected.package_name !== undefined
-                              ? selected.package_name
-                              : null
-                          } ₱${selected.price}`
-                        );
+                        } ₱${selected.price}`
+                      );
 
-                        // console.log(productValue1);
-                      }}
-                    >
-                      {products.map((product, index) => (
-                        <SelectItem key={index} title={product.product_name} />
-                      ))}
-                      {packages.map((packages, index) => {
-                        return (
-                          <SelectItem
-                            key={products.length + index}
-                            title={packages.package_name}
-                          />
-                        );
-                      })}
-                    </Select>
-                    <Select
-                      style={{
-                        width: 380,
-                        alignSelf: "flex-start",
-                        padding: 10,
-                      }}
-                      label="Select a Service"
-                      alignment="start"
-                      value={
-                        productValue2 ||
-                        (selectedProduct
-                          ? selectedProduct.product_name !== undefined
-                            ? selectedProduct.product_name
-                            : selectedProduct.package_name !== undefined
-                            ? selectedProduct.package_name
-                            : null
-                          : "")
-                      }
-                      onSelect={(index) => {
-                        console.log(productsAndPackages[index - 1]);
-                        const selected = productsAndPackages[index - 1];
-                        setSelectedProduct(selected);
-                        setProductValue2(
-                          `${
-                            selected.product_name !== undefined
-                              ? selected.product_name
-                              : selected.package_name !== undefined
-                              ? selected.package_name
-                              : null
-                          } ₱${selected.price}`
-                        );
-
-                        // console.log(productValue2);
-                      }}
-                    >
-                      {products.map((product, index) => (
-                        <SelectItem key={index} title={product.product_name} />
-                      ))}
-                      {packages.map((packages, index) => {
-                        return (
-                          <SelectItem
-                            key={products.length + index}
-                            title={packages.package_name}
-                          />
-                        );
-                      })}
-                    </Select>
-                  </Layout>
-                </View>
+                      // console.log(productValue2);
+                    }}
+                  >
+                    {products.map((product, index) => (
+                      <SelectItem key={index} title={product.product_name} />
+                    ))}
+                    {packages.map((packages, index) => {
+                      return (
+                        <SelectItem
+                          key={products.length + index}
+                          title={packages.package_name}
+                        />
+                      );
+                    })}
+                  </Select>
+                </Layout>
               </View>
               {/* Display the total price */}
               <View
@@ -526,33 +465,53 @@ const Booking = () => {
           </View>
         ) : page === 3 ? (
           <View style={styles.bodyContainer}>
-            {staff.length > 0 &&
-              staff.map((item, index) => {
-                return (
-                  <View key={index}>
-                    <Card style={styles.tcardStyle}></Card>
-                    <Button
-                      mode="contained"
-                      buttonColor="#f9e2e1"
-                      style={{
-                        marginTop: 15,
-                        borderRadius: 5,
-                        width: "40%",
-                        height: 45,
-                        justifyContent: "center",
-                        alignItems: "centser",
-                      }}
-                      onPress={() => {
-                        console.log(item);
-                      }}
-                    ></Button>
-                  </View>
-                );
-              })}
+            <Text style={styles.textStyle}> Assigned Technician</Text>
+            <>
+              <RadioGroup
+                selectedIndex={selectedStaff}
+                onChange={(index) => {
+                  console.log("RadioGroup - Selected Index:", index);
+                  console.log("RadioGroup - Selected Item:", staff[index]); // Log the selected staff item
+                  setSelectedStaff(index); // Make sure to update the state
+                }}
+              >
+                {staff.length > 0 &&
+                  staff.map((item, index) => {
+                    return (
+                      <View style={styles.p3container} key={index}>
+                        <View style={styles.p3content}>
+                          <Card style={styles.tcardStyle}>
+                            <Image
+                              source={{
+                                uri: `https://graceynails.com/NailSalonProject-main/public/img/profile_pictures/${item.id}/${item.staff_image}`,
+                              }}
+                              style={styles.imageStyle}
+                            />
+                          </Card>
+                          <Radio
+                            onChange={() => {
+                              console.log(item);
+                              setSelectedStaff(index);
+                            }}
+                            checked={selectedStaff === index}
+                          >
+                            {`Option ${index + 1}`}
+                          </Radio>
+                          <Text>Name: {item.staff_name}</Text>
+                          <Text>Services:</Text>
+                          {item.services.map((service) => (
+                            <Text key={service.id}>{service.service_name}</Text>
+                          ))}
+                        </View>
+                      </View>
+                    );
+                  })}
+              </RadioGroup>
+            </>
           </View>
         ) : (
           <View style={styles.bodyContainer}>
-            <Text>Page 4</Text>
+            <Text style={styles.textStyle}> Summary Form</Text>
           </View>
         )}
       </ScrollView>
@@ -631,6 +590,10 @@ const Booking = () => {
                   .format(`YYYY-MM-DD hh:mm A`)
               );
 
+              // api.get("getStaff").then((response) => {
+              //   setStaff(response.data.staff);
+              // });
+
               api
                 .get("getAvailableStaff", {
                   params: {
@@ -680,14 +643,58 @@ const styles = StyleSheet.create({
     width: 380,
     height: 390,
     borderRadius: 20,
-    margin: 10,
+    margin: 1,
+  },
+  packagecardStyle: {
+    flexDirection: "row",
+    width: 380,
+    height: "55%",
+    borderRadius: 20,
+    margin: 1,
+    padding: 10,
+  },
+  packageContainer: {
+    marginBottom: -10,
+  },
+  productContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    // justifyContent: "space-evenly",
+  },
+  productItem: {
+    margin: 2,
+  },
+  p3container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    marginBottom: 30,
+  },
+  p3content: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   tcardStyle: {
     flexDirection: "row",
-    width: 170,
-    height: 300,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 200,
+    height: 320,
     borderRadius: 20,
     margin: 10,
+  },
+  imageStyle: {
+    height: 300,
+    width: 170,
+    borderRadius: 10,
+  },
+
+  textStyle: {
+    paddingLeft: "2%",
+    marginTop: "1%",
+    marginBottom: "1%",
+    fontFamily: "Montserrat-Medium",
+    fontSize: 26,
   },
 });
 
