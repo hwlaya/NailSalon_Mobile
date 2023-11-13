@@ -24,11 +24,11 @@ const IndexScreen = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const serviceImages = {
-    "General Service": require("../assets/images/general_service.jpg"),
-    "Nail Extension": require("../assets/images/nail_extension.jpg"),
-    Waxing: require("../assets/images/waxing.jpg"),
-    Eyelash: require("../assets/images/eyelash.jpg"),
-    "Eyelash Extensions": require("../assets/images/eyelash_extension.jpg"),
+    "General Service": require("../assets/images/patrickslay.jpg"),
+    "Nail Extension": require("../assets/images/patricknails.jpg"),
+    Waxing: require("../assets/images/patrickwax.jpg"),
+    Eyelash: require("../assets/images/patricklash.jpg"),
+    "Eyelash Extensions": require("../assets/images/patrickeyelash.jpg"),
   };
 
   useEffect(() => {

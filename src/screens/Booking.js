@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   View,
@@ -29,8 +29,9 @@ import {
   useTheme,
 } from "@ui-kitten/components";
 import moment from "moment";
+import { UserContext } from "../providers/UserProvider";
 
-const options = ["Sampaloc Manila", "Quezon City"];
+const options = ["Select a Branch", "Sampaloc Manila", "Quezon City"];
 
 const Booking = () => {
   const route = useRoute();
@@ -56,13 +57,20 @@ const Booking = () => {
 
   const [selectedService, setSelectedService] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [testProduct, setTestProduct] = useState(new IndexPath(0));
+  const [selectedPackage, setSelectedPackage] = useState(null);
   const [productValue, setProductValue] = useState("");
   const [productValue1, setProductValue1] = useState("");
   const [productValue2, setProductValue2] = useState("");
-  const [selectedPackage, setSelectedPackage] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [testProduct, setTestProduct] = useState(new IndexPath(0));
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [value, setValue] = useState();
+
+  const user = useContext(UserContext);
+  const [fname, setFname] = useState(user.user.first_name);
+  const [lname, setLname] = useState(user.user.last_name);
+  const [phone, setPhone] = useState(user.userProfile.contact_no);
+  const [email, setEmail] = useState(user.user.email);
 
   useEffect(() => {
     api
@@ -386,7 +394,7 @@ const Booking = () => {
                         } ₱${selected.price}`
                       );
 
-                      // console.log(productValue1);
+                      console.log(productValue1);
                     }}
                   >
                     {products.map((product, index) => (
@@ -433,7 +441,7 @@ const Booking = () => {
                         } ₱${selected.price}`
                       );
 
-                      // console.log(productValue2);
+                      console.log(productValue2);
                     }}
                   >
                     {products.map((product, index) => (
@@ -472,7 +480,7 @@ const Booking = () => {
                 onChange={(index) => {
                   console.log("RadioGroup - Selected Index:", index);
                   console.log("RadioGroup - Selected Item:", staff[index]); // Log the selected staff item
-                  setSelectedStaff(index); // Make sure to update the state
+                  setSelectedStaff(index); //  update the state
                 }}
               >
                 {staff.length > 0 &&
@@ -490,7 +498,6 @@ const Booking = () => {
                           </Card>
                           <Radio
                             onChange={() => {
-                              console.log(item);
                               setSelectedStaff(index);
                             }}
                             checked={selectedStaff === index}
@@ -511,7 +518,95 @@ const Booking = () => {
           </View>
         ) : (
           <View style={styles.bodyContainer}>
-            <Text style={styles.textStyle}> Summary Form</Text>
+            <Text style={styles.textStyle}> Summary Form </Text>
+            <Text category="h6">Customer Details</Text>
+            <Input
+              placeholder="Place your Text"
+              value={fname}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={lname}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={phone}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={email}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Text category="h6">Booking Details</Text>
+            <Input
+              placeholder="Place your Text"
+              value={moment(selectedDate).format("LL")}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={selectedTime}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={displayValue}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Text category="h6">Service Details</Text>
+            <Input
+              placeholder="Place your Text"
+              value={productValue}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={productValue1}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={productValue2}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Text category="h6">Technician Details</Text>
+            <Input
+              placeholder="Place your Text"
+              value={staff[selectedIndex].staff_name}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
+            <Input
+              placeholder="Place your Text"
+              value={`₱${String(totalPrice)}`}
+              style={styles.inputStyle}
+              disabled="true"
+              onChangeText={(nextValue) => setValue(nextValue)}
+            />
           </View>
         )}
       </ScrollView>
@@ -556,8 +651,35 @@ const Booking = () => {
             flexDirection: "row",
             alignItems: "center",
           }}
-          onPress={() => {
-            if (progress === 1) {
+          onPress={async () => {
+            if (page === 4) {
+              const formdata = new FormData();
+              formdata.append("user_id", user.user.id);
+              formdata.append("date", moment(selectedDate).format("LL"));
+              formdata.append("time_in", timeIn);
+              formdata.append("time_out", timeOut);
+              formdata.append("branch", "Sampaloc Manila");
+              formdata.append("staff_id", selectedStaff);
+              formdata.append("service1", productValue.split("₱")[0]);
+              formdata.append("service2", productValue1.split("₱")[0]);
+              formdata.append("service3", productValue2.split("₱")[0]);
+              formdata.append("total_price", totalPrice);
+
+              try {
+                const response = await api.post("booking", formdata);
+              } catch (err) {
+                console.log(err.response);
+              }
+
+              // api
+              //   .post("booking", formdata)
+              //   .then((response) => {
+              //     console.log(response.data);
+              //   })
+              //   .catch((err) => {
+              //     console.log(err.response);
+              //   });
+            } else if (progress === 1) {
               Alert.alert("Warning!", "Already at the last page!");
             } else {
               let tempProgress = progress;
@@ -589,11 +711,6 @@ const Booking = () => {
                   .add(30, "minutes")
                   .format(`YYYY-MM-DD hh:mm A`)
               );
-
-              // api.get("getStaff").then((response) => {
-              //   setStaff(response.data.staff);
-              // });
-
               api
                 .get("getAvailableStaff", {
                   params: {
@@ -617,7 +734,7 @@ const Booking = () => {
             }
           }}
         >
-          <Text style={{ color: "#fff" }}>Next</Text>
+          <Text style={{ color: "#fff" }}>{page == 4 ? "Submit" : "Next"}</Text>
           <Icon name="chevron-right" size={20} color={"#fff"} />
         </TouchableOpacity>
       </View>
@@ -695,6 +812,13 @@ const styles = StyleSheet.create({
     marginBottom: "1%",
     fontFamily: "Montserrat-Medium",
     fontSize: 26,
+  },
+
+  inputStyle: {
+    padding: 6,
+    justifyContent: "center",
+    width: "50%",
+    borderRadius: 10,
   },
 });
 
