@@ -30,6 +30,20 @@ const IndexScreen = () => {
     Eyelash: require("../assets/images/patricklash.jpg"),
     "Eyelash Extensions": require("../assets/images/patrickeyelash.jpg"),
   };
+  const packageImages = {
+    "Package A": require("../assets/images/a.png"),
+    "Package B": require("../assets/images/b.png"),
+    "Package C": require("../assets/images/c.png"),
+    "Package D": require("../assets/images/d.png"),
+    "Package E": require("../assets/images/e.png"),
+    "Package F": require("../assets/images/f.png"),
+    "Package G": require("../assets/images/g.png"),
+    "Package H": require("../assets/images/h.png"),
+    "Package I": require("../assets/images/i.png"),
+    "Package J": require("../assets/images/j.png"),
+    "Package K": require("../assets/images/k.png"),
+    "Package L": require("../assets/images/l.png"),
+  };
 
   useEffect(() => {
     api
@@ -164,6 +178,8 @@ const IndexScreen = () => {
           >
             {packages.length > 0
               ? packages.map((item, index) => {
+                  const packageName = item.package_name;
+                  const packageImage = packageImages[packageName];
                   return (
                     <TouchableOpacity
                       activeOpacity={1}
@@ -171,7 +187,7 @@ const IndexScreen = () => {
                       key={index}
                       style={{ alignItems: "center" }}
                     >
-                      <Card style={styles.cardStyle}></Card>
+                      <Image source={packageImage} style={styles.cardImage} />
                       <Text>{item.package_name}</Text>
                     </TouchableOpacity>
                   );
@@ -208,6 +224,12 @@ const styles = StyleSheet.create({
     // marginRight: 25,
   },
   cardStyle: {
+    width: 120,
+    height: 120,
+    borderRadius: 20,
+    margin: 10,
+  },
+  tcardStyle: {
     width: 120,
     height: 120,
     borderRadius: 20,

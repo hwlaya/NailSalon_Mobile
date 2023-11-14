@@ -20,6 +20,7 @@ import Register from "../Auth/Register";
 import IndexScreen from "../screens/IndexScreen";
 import Booking from "../screens/Booking";
 import Profile from "../screens/Profile";
+import Customization from "../screens/Customization";
 import { Divider, Drawer } from "react-native-paper";
 import { UserContext } from "../providers/UserProvider";
 
@@ -188,6 +189,16 @@ const CustomDrawerContent = (props) => {
             navigation.navigate("Booking");
           }}
         />
+        <Drawer.Item
+          label="Customization"
+          active={active == "Customization"}
+          icon={() => (
+            <Icon name="palette-outline" size={30} color={"#F8C5C5"} />
+          )}
+          onPress={() => {
+            navigation.navigate("Customization");
+          }}
+        />
       </Drawer.Section>
       <Drawer.Item
         label="Logout"
@@ -231,6 +242,13 @@ const DrawerStack = () => {
       <DrawerStackNav.Screen
         name="Booking"
         component={Booking}
+        options={{
+          header: () => <CustomHeader />,
+        }}
+      />
+      <DrawerStackNav.Screen
+        name="Customization"
+        component={Customization}
         options={{
           header: () => <CustomHeader />,
         }}

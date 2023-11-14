@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import { ProgressBar, Card, Button } from "react-native-paper";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import api from "../../config/api";
 import RNDateTimePicker, {
   DateTimePickerAndroid,
@@ -34,6 +34,7 @@ import { UserContext } from "../providers/UserProvider";
 const options = ["Select a Branch", "Sampaloc Manila", "Quezon City"];
 
 const Booking = () => {
+  const navigation = useNavigation();
   const route = useRoute();
   const theme = useTheme();
 
@@ -600,13 +601,18 @@ const Booking = () => {
               disabled="true"
               onChangeText={(nextValue) => setValue(nextValue)}
             />
-            <Input
-              placeholder="Place your Text"
-              value={`₱${String(totalPrice)}`}
-              style={styles.inputStyle}
-              disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
-            />
+            <View>
+              <Text>Total: </Text>
+            </View>
+            <View style={{ alignItems: "flex-end" }}>
+              <Input
+                placeholder="Place your Text"
+                value={`₱${String(totalPrice)}`}
+                style={styles.inputStyle}
+                disabled="true"
+                onChangeText={(nextValue) => setValue(nextValue)}
+              />
+            </View>
           </View>
         )}
       </ScrollView>
@@ -667,18 +673,11 @@ const Booking = () => {
 
               try {
                 const response = await api.post("booking", formdata);
+                Alert.alert("Success!", "Booking Successfully Created");
+                navigation.navigate("IndexScreen");
               } catch (err) {
                 console.log(err.response);
               }
-
-              // api
-              //   .post("booking", formdata)
-              //   .then((response) => {
-              //     console.log(response.data);
-              //   })
-              //   .catch((err) => {
-              //     console.log(err.response);
-              //   });
             } else if (progress === 1) {
               Alert.alert("Warning!", "Already at the last page!");
             } else {
