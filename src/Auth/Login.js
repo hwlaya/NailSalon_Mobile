@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Button, Text, TextInput, Card } from "react-native-paper";
 import Loading from "../components/Loading";
-import axios from "axios";
+
 import api from "../../config/api";
 import { UserContext } from "../providers/UserProvider";
 // import Header from "../components/Header";

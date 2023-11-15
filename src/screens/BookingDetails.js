@@ -3,7 +3,6 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Text, Divider } from "react-native-paper";
 import { Input } from "@ui-kitten/components";
 import moment from "moment";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 
 const BookingDetails = ({ route }) => {

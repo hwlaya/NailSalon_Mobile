@@ -725,7 +725,7 @@ const Booking = () => {
                     serviceType1: 1,
                     serviceType2: 1,
                     serviceType3: 1,
-                    userId: 3,
+                    userId: user.user.id,
                   },
                 })
                 .then((response) => {
