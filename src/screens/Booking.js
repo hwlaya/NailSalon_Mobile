@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  Dimensions,
   View,
   StyleSheet,
   ScrollView,
@@ -8,7 +7,7 @@ import {
   Alert,
   Image,
 } from "react-native";
-import { ProgressBar, Card, Button } from "react-native-paper";
+import { ProgressBar, Card } from "react-native-paper";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import api from "../../config/api";
 import RNDateTimePicker, {
@@ -26,7 +25,6 @@ import {
   Text,
   Radio,
   RadioGroup,
-  useTheme,
 } from "@ui-kitten/components";
 import moment from "moment";
 import { UserContext } from "../providers/UserProvider";
@@ -36,7 +34,6 @@ const options = ["Select a Branch", "Sampaloc Manila", "Quezon City"];
 const Booking = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const theme = useTheme();
 
   const [progress, setProgress] = useState(0.25);
   const [page, setPage] = useState(1);
@@ -114,7 +111,19 @@ const Booking = () => {
   const calculateTotalPrice = () => {
     console.log("Total Price:", totalPrice);
   };
-
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setSelectedDate(null);
+      setSelectedTime(null);
+      setSelectedBranch(new IndexPath(0));
+      setProductValue("");
+      setProductValue1("");
+      setProductValue2("");
+      setTotalPrice(0);
+      setSelectedStaff(null);
+    });
+    return unsubscribe;
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <ProgressBar
@@ -176,6 +185,9 @@ const Booking = () => {
               <RNDateTimePicker
                 mode="time"
                 value={new Date()}
+                is24Hour={false}
+                minimumDate={moment().set({ hour: 11, minute: 0 }).toDate()}
+                maximumDate={moment().set({ hour: 22, minute: 0 }).toDate()}
                 style={{ width: 300, opacity: 1, height: 30, marginTop: 50 }}
                 onChange={(e, date) => {
                   if (e.type === "set") {
@@ -486,6 +498,7 @@ const Booking = () => {
               >
                 {staff.length > 0 &&
                   staff.map((item, index) => {
+                    console.log(staff);
                     return (
                       <View style={styles.p3container} key={index}>
                         <View style={styles.p3content}>
@@ -522,95 +535,84 @@ const Booking = () => {
             <Text style={styles.textStyle}> Summary Form </Text>
             <Text category="h6">Customer Details</Text>
             <Input
-              placeholder="Place your Text"
+              placeholder="First Name"
               value={fname}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Last Name"
               value={lname}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Contact Number"
               value={phone}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Email"
               value={email}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Text category="h6">Booking Details</Text>
             <Input
-              placeholder="Place your Text"
+              placeholder="Date"
               value={moment(selectedDate).format("LL")}
               style={styles.inputStyle}
               disabled="true"
               onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Time"
               value={selectedTime}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Branch"
               value={displayValue}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Text category="h6">Service Details</Text>
             <Input
-              placeholder="Place your Text"
+              placeholder="Service"
               value={productValue}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Selected Service: None"
               value={productValue1}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Input
-              placeholder="Place your Text"
+              placeholder="Selected Service: None"
               value={productValue2}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <Text category="h6">Technician Details</Text>
             <Input
-              placeholder="Place your Text"
+              placeholder="Staff"
               value={staff[selectedIndex].staff_name}
               style={styles.inputStyle}
               disabled="true"
-              onChangeText={(nextValue) => setValue(nextValue)}
             />
             <View>
               <Text>Total: </Text>
             </View>
             <View style={{ alignItems: "flex-end" }}>
               <Input
-                placeholder="Place your Text"
+                placeholder="Total Price"
                 value={`₱${String(totalPrice)}`}
                 style={styles.inputStyle}
                 disabled="true"
-                onChangeText={(nextValue) => setValue(nextValue)}
               />
             </View>
           </View>
@@ -806,11 +808,12 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
+    padding: 20,
     paddingLeft: "2%",
     marginTop: "1%",
     marginBottom: "1%",
     fontFamily: "Montserrat-Medium",
-    fontSize: 26,
+    fontSize: 30,
   },
 
   inputStyle: {

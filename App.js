@@ -2,15 +2,15 @@ import "react-native-gesture-handler";
 // In App.js in a new project
 
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./src/Auth/Login";
-import IndexScreen from "./src/screens/IndexScreen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import MainNavigation from "./src/Navigation/MainNavigation";
 import { PaperProvider } from "react-native-paper";
 import { UserProvider } from "./src/providers/UserProvider";
+import { SplashScreen } from "react-native-splash-screen";
 import { useFonts } from "expo-font";
 import { ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
@@ -39,3 +39,10 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

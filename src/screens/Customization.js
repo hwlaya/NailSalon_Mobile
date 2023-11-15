@@ -104,7 +104,6 @@ const Customization = () => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Text style={styles.textStyle}>Customization</Text>
         <View style={{ alignItems: "center" }}>
-          {/* MANICURE INTERFACE */}
           {displayTypeService == "Manicure" ? (
             <Svg
               height="250px"
@@ -899,11 +898,12 @@ const Customization = () => {
 
 const styles = StyleSheet.create({
   textStyle: {
+    padding: 20,
     paddingLeft: "2%",
     marginTop: "1%",
     marginBottom: "5%",
     fontFamily: "Montserrat-Medium",
-    fontSize: 26,
+    fontSize: 30,
   },
   buttonContainer: {
     backgroundColor: "#f9e2e1",

@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
   Alert,
   ScrollView,
 } from "react-native";
@@ -16,14 +15,12 @@ import api from "../../config/api";
 import { UserContext } from "../providers/UserProvider";
 // import Header from "../components/Header";
 
-const screenHeight = Dimensions.get("window").height;
-
 const Login = () => {
   const navigation = useNavigation();
   const user = useContext(UserContext);
   const userProfile = useContext(UserContext);
-  const [email, setEmail] = useState("tylerc08@gmail.com");
-  const [password, setPassword] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmitLogin = () => {
@@ -173,9 +170,6 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: "100%",
-    // // alignItems: "center",
-    // // justifyContent: "center",
     backgroundColor: "#fff",
   },
   bodyContainer: {

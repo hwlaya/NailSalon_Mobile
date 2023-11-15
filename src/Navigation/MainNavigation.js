@@ -14,77 +14,20 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import IndexScreen from "../screens/IndexScreen";
-import Booking from "../screens/Booking";
 import Profile from "../screens/Profile";
+import Booking from "../screens/Booking";
+import BookingList from "../screens/BookingList";
+import BookingDetails from "../screens/BookingDetails";
+import BookingReview from "../screens/BookingReview";
 import Customization from "../screens/Customization";
 import { Divider, Drawer } from "react-native-paper";
 import { UserContext } from "../providers/UserProvider";
 
 const AuthStack = createNativeStackNavigator();
 const DrawerStackNav = createDrawerNavigator();
-// const BottomTab = createMaterialBottomTabNavigator();
-
-// const BottomTabNavigation = () => {
-//   return (
-//     <BottomTab.Navigator
-//       tabBar={({ navigation, state, descriptors, insets }) => (
-//         <BottomNavigation.Bar
-//           navigationState={state}
-//           safeAreaInsets={insets}
-//           onTabPress={({ route, preventDefault }) => {
-//             const event = navigation.emit({
-//               type: "tabPress",
-//               target: route.key,
-//               canPreventDefault: true,
-//             });
-
-//             if (event.defaultPrevented) {
-//               preventDefault();
-//             } else {
-//               navigation.dispatch({
-//                 ...CommonActions.navigate(route.name, route.params),
-//                 target: state.key,
-//               });
-//             }
-//           }}
-//           renderIcon={({ route, focused, color }) => {
-//             const { options } = descriptors[route.key];
-//             if (options.tabBarIcon) {
-//               return options.tabBarIcon({ focused, color, size: 24 });
-//             }
-
-//             return null;
-//           }}
-//           getLabelText={({ route }) => {
-//             const { options } = descriptors[route.key];
-//             const label =
-//               options.tabBarLabel !== undefined
-//                 ? options.tabBarLabel
-//                 : options.title !== undefined
-//                 ? options.title
-//                 : route.title;
-
-//             return label;
-//           }}
-//         />
-//       )}
-//     >
-//       <BottomTab.Screen
-//         name="Home"
-//         component={IndexScreen}
-//         options={{
-//           tabBarIcon: ({ color, size }) => {
-//             <Icon name="home" size={size} color={color} />;
-//           },
-//         }}
-//       />
-//     </BottomTab.Navigator>
-//   );
-// };
 
 const CustomHeader = () => {
   const navigation = useNavigation();
@@ -124,9 +67,7 @@ const CustomHeader = () => {
           }}
         />
       )}
-      <View>
-        <Text></Text>
-      </View>
+      <View></View>
     </View>
   );
 };
@@ -139,20 +80,6 @@ const CustomDrawerContent = (props) => {
     <View>
       <Drawer.Section style={{ paddingTop: 50 }}>
         <View style={{ flexDirection: "row" }}>
-          {/* <View
-            style={{
-              backgroundColor: "#F8C5C5",
-              paddingVertical: 15,
-              paddingHorizontal: 10,
-              flexDirection: "row",
-              justifyContent: "center",
-              width: 80,
-              marginLeft: 20,
-              borderRadius: 500,
-            }}
-          >
-            <Icon name="account" size={50} color={"#fff"} />
-          </View> */}
           <View style={{ justifyContent: "center", marginLeft: 20 }}>
             <Text style={{ fontFamily: "Montserrat-Bold", fontSize: 20 }}>
               {user.user.first_name} {user.user.last_name}
@@ -190,6 +117,16 @@ const CustomDrawerContent = (props) => {
           }}
         />
         <Drawer.Item
+          label="Booking List"
+          active={active == "BookingList"}
+          icon={() => (
+            <Icon name="calendar-check" size={30} color={"#F8C5C5"} />
+          )}
+          onPress={() => {
+            navigation.navigate("BookingList");
+          }}
+        />
+        <Drawer.Item
           label="Customization"
           active={active == "Customization"}
           icon={() => (
@@ -217,14 +154,6 @@ const DrawerStack = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       drawerStyle={{ backgroundColor: "white" }}
     >
-      {/* <DrawerStackNav.Screen
-        name="BottomNav"
-        component={BottomTabNavigation}
-        options={{
-          header: () => <CustomHeader />,
-        }}
-
-      /> */}
       <DrawerStackNav.Screen
         name="IndexScreen"
         component={IndexScreen}
@@ -242,6 +171,27 @@ const DrawerStack = () => {
       <DrawerStackNav.Screen
         name="Booking"
         component={Booking}
+        options={{
+          header: () => <CustomHeader />,
+        }}
+      />
+      <DrawerStackNav.Screen
+        name="BookingList"
+        component={BookingList}
+        options={{
+          header: () => <CustomHeader />,
+        }}
+      />
+      <DrawerStackNav.Screen
+        name="BookingDetails"
+        component={BookingDetails}
+        options={{
+          header: () => <CustomHeader />,
+        }}
+      />
+      <DrawerStackNav.Screen
+        name="BookingReview"
+        component={BookingReview}
         options={{
           header: () => <CustomHeader />,
         }}
