@@ -5,18 +5,13 @@ import {
   View,
   StyleSheet,
   Image,
-  Dimensions,
   ScrollView,
   Alert,
 } from "react-native";
 import { Button, Text, TextInput, Card, HelperText } from "react-native-paper";
-import axios from "axios";
 import Loading from "../components/Loading";
 import api from "../../config/api";
 import moment from "moment";
-// import Header from "../components/Header";
-
-// const screenHeight = Dimensions.get("window").height;
 
 const Register = () => {
   const navigation = useNavigation();
@@ -60,22 +55,22 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmitRegister = () => {
-    setLoading(true);
+    // setLoading(true);
     if (password !== cpassword) {
       Alert.alert(
         "Password Mismatch!",
         "Please make sure that your password is the same!"
       );
-      setLoading(false);
+      // setLoading(false);
     } else if (!isDateOfBirthValid) {
       Alert.alert("Invalid Format!", "Date format must be YYYY-MM-DD");
-      setLoading(false);
+      // setLoading(false);
     } else if (errorhelper) {
       Alert.alert(
         "Invalid Phone format",
         "Must be 10 characters and first character must be not 0"
       );
-      setLoading(false);
+      // setLoading(false);
     } else {
       api
         .post("register", {
@@ -93,7 +88,8 @@ const Register = () => {
         })
 
         .then((response) => {
-          setLoading(false);
+          // setLoading(false);
+          console.log(response);
           Alert.alert(
             "Success!",
             "Account has been registered. Proceed to login!"
@@ -101,12 +97,11 @@ const Register = () => {
           navigation.navigate("Login");
         })
         .catch((err) => {
-          setLoading(false);
+          // setLoading(false);
           console.log(err.response);
         });
     }
   };
-
   return (
     <View style={styles.container}>
       <Loading loading={loading} />
@@ -355,17 +350,11 @@ const Register = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: "100%",
-    // alignItems: "center",
-    // justifyContent: "center",
     backgroundColor: "#fff",
   },
 
   bodyContainer: {
     flex: 1,
-    // paddingHorizontal: 30,
-    // paddingTop: 80,
-    // alignContent: "center",
     jusitfyContent: "center",
     backgroundColor: "#f9e2e1",
   },
