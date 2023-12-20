@@ -29,16 +29,21 @@ const optionsNailPolish = [
 const optionsNailSize = ["Small", "Big"];
 const optionsExtensions = ["Yes", "No"];
 
+const skinPallete = ["#FFF0E0", "#ECD6C8", "#D8B289", "#8A653E"];
+
 const Customization = () => {
   const navigation = useNavigation();
   const [colors, setColors] = useState([]);
-  const [nailColor, setNailColor] = useState("");
+  const [nailColor, setNailColor] = useState(``);
   const [selectedNailColor, setSelectedNailColor] = useState();
+  const [skinColor, setSkinColor] = useState("#ECD6C8");
 
   const [selectedTypeService, setSelectedTypeService] = useState(0);
   const [selectedNailPolish, setSelectedNailPolish] = useState(0);
   const [selectedNailSize, setSelectedNailSize] = useState(0);
   const [selectedExtensions, setSelectedExtensions] = useState(0);
+  const [selectedSkinColor, setSelectedSkinColor] = useState(0);
+
   const displayTypeService = optionsTypeService[selectedTypeService.row];
   const displayNailPolish = optionsNailPolish[selectedNailPolish.row];
   const displayNailSize = optionsNailSize[selectedNailSize.row];
@@ -64,6 +69,7 @@ const Customization = () => {
     formdata.append("nail_size", displayNailSize);
     formdata.append("has_extensions", displayExtensions);
     formdata.append("color", nailColor);
+    formdata.append("skin", skinColor);
 
     api
       .post("storeCustomization", formdata)
@@ -97,6 +103,7 @@ const Customization = () => {
       setSelectedNailPolish(0);
       setSelectedNailSize(0);
       setSelectedExtensions(0);
+      setSelectedSkinColor(0);
     });
     return unsubscribe;
   }, [navigation]);
@@ -130,23 +137,23 @@ const Customization = () => {
                 ></Path>
                 <G>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M329.289,233.257c-7.666-3.286-16.839,0.987-20.505,9.55l-45.263,107.684 c-3.318,7.762-0.395,16.479,6.557,19.458c6.943,2.973,15.274-0.911,18.6-8.682l48.927-105.637 C341.275,247.077,336.936,236.539,329.289,233.257z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M361.949,246.566c-8.007-3.29-18.065-0.056-21.606,8.563l-50.622,129.43 c-3.211,7.805,0.072,16.571,7.34,19.555c7.258,2.981,15.749-0.941,18.961-8.753l55.377-126.818 C374.93,259.926,369.958,249.857,361.949,246.566z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M394.111,260.418c-7.733-3.069-17.758,0.93-21.178,9.598l-41.261,107.071 c-3.432,8.651,0.071,18.157,7.81,21.225c7.745,3.072,16.795-1.461,20.229-10.115l44.161-105.917 C407.298,273.614,401.853,263.488,394.111,260.418z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M427.094,270.205c-7.323-2.779-17.57,1.292-20.874,9.984l-20.478,62.648 c-2.868,7.554-0.039,15.63,6.314,18.05c6.354,2.411,13.834-1.755,16.702-9.307l20.976-61.091 C433.046,281.784,434.411,272.987,427.094,270.205z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M351.273,148.413c0,0-29.284,18.644-44.187,27.445c-7.592,4.519-17.002,21.612-28.612,36.851 c-11.144,14.646-25.177,25.142-23.648,30.923c4.194,15.86,26.673,4.979,29.232,3.521c21.731-12.433,41.892-39.138,41.892-39.138 l36.729-10.467L351.273,148.413z"
                   ></Path>
                 </G>
@@ -208,31 +215,31 @@ const Customization = () => {
                 ></Path>
                 <G>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M400.359,52.237l-20.152,54.974c-6.07,7.209-36.509,46.286-36.509,46.286l-38.531,98.764 l54.913,23.82l45.483,10.192l24.785,2.988c0,0,21.809-44.96,30.634-73.794c8.635-28.21,9.646-44.468,12.338-71.46 C456.594,107.868,431.435,76.435,400.359,52.237z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M152.46,153.496c0,0-30.438-39.076-36.509-46.286L95.799,52.238 c-31.076,24.198-56.234,55.631-72.961,91.77c2.691,26.992,3.703,43.25,12.338,71.459c8.825,28.834,30.634,73.794,30.634,73.794 l24.785-2.988l45.483-10.192l54.914-23.82L152.46,153.496z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M232.637,350.492l-45.263-107.684c-3.666-8.563-12.839-12.836-20.505-9.55 c-7.647,3.282-11.985,13.819-8.314,22.374l48.926,105.637c3.325,7.771,11.656,11.655,18.6,8.682 C233.031,366.971,235.955,358.254,232.637,350.492z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M206.437,384.558l-50.622-129.43c-3.54-8.619-13.6-11.853-21.606-8.563 c-8.009,3.291-12.98,13.36-9.449,21.976l55.378,126.818c3.211,7.812,11.702,11.735,18.96,8.753 C206.365,401.129,209.648,392.364,206.437,384.558z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M164.485,377.087l-41.261-107.071c-3.42-8.667-13.443-12.667-21.178-9.598 c-7.742,3.07-13.187,13.196-9.762,21.862l44.162,105.917c3.434,8.654,12.484,13.187,20.229,10.115 C164.414,395.244,167.918,385.738,164.485,377.087z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M110.416,342.837l-20.478-62.648c-3.304-8.692-13.551-12.763-20.874-9.984 c-7.317,2.781-5.952,11.578-2.641,20.284l20.976,61.091c2.868,7.551,10.349,11.718,16.702,9.307 C110.455,358.467,113.284,350.391,110.416,342.837z"
                   ></Path>
                   <Path
-                    style={{ fill: "#fdc99f" }}
+                    style={{ fill: `${skinColor}` }}
                     d="M217.683,212.709c-11.61-15.239-21.021-32.333-28.611-36.851 c-14.903-8.801-44.188-27.445-44.188-27.445l-11.406,49.136l36.729,10.467c0,0,20.16,26.705,41.892,39.138 c2.561,1.457,25.038,12.339,29.232-3.521C242.86,237.851,228.827,227.354,217.683,212.709z"
                   ></Path>
                 </G>
@@ -368,7 +375,7 @@ const Customization = () => {
                   d="M248.082,0.003C111.07,0.003,0,111.063,0,248.085c0,137.001,111.07,248.07,248.082,248.07 c137.006,0,248.076-111.069,248.076-248.07C496.158,111.062,385.088,0.003,248.082,0.003z"
                 ></Path>
                 <Path
-                  style={{ fill: "#fdc99f" }}
+                  style={{ fill: `${skinColor}` }}
                   d="M74.532,70.834c-8.71,53.711-24.61,148.872-32.663,178.969c-5.811,21.717-9.94,26.916-10.398,38.845 c-0.27,7.013,7.34,22.94,19.729,19.728c0,0,3.211,21.105,25.693,20.188c0,0,2.293,22.023,27.069,21.564 c0,0-2.295,41.293,43.586,23.399l38.08-70.656c0,0,47.7-161.856,48.3-174.76c0.479-10.304,3.83-94.442,5.16-127.929 C175.092,2.464,117.277,28.976,74.532,70.834z"
                 ></Path>
                 <G>
@@ -394,7 +401,7 @@ const Customization = () => {
                   ></Path>
                 </G>
                 <Path
-                  style={{ fill: "#fdc99f" }}
+                  style={{ fill: `${skinColor}` }}
                   d="M230.592,190.464c0-21.564,2.982-54.139,2.982-63.774l-80.291,141.542c0,0,10.782,25.005,8.946,41.98 c-0.175,1.612-0.312,2.931-0.416,4.004c-3.284,8.208-14.789,37.617-15.183,47.84c0,0-4.13,32.116,34.869,32.116 c0,0,44.045-9.176,49.092-51.387c0,0,0.458-33.033-7.341-51.386C223.251,291.4,230.592,212.028,230.592,190.464z"
                 ></Path>
                 <Path
@@ -546,7 +553,7 @@ const Customization = () => {
                   ></Path>
                 </G>
                 <Path
-                  style={{ fill: "#fdc99f" }}
+                  style={{ fill: `${skinColor}` }}
                   d="M464.687,288.648c-0.459-11.929-4.589-17.128-10.398-38.845 c-8.053-30.097-23.953-125.259-32.663-178.97C378.881,28.975,321.065,2.462,257.07,0.182c1.33,33.486,4.68,117.625,5.16,127.929 c0.6,12.903,48.299,174.76,48.299,174.76l38.081,70.656c45.881,17.894,43.586-23.399,43.586-23.399 c24.775,0.459,27.069-21.564,27.069-21.564c22.481,0.918,25.693-20.188,25.693-20.188 C457.348,311.588,464.956,295.661,464.687,288.648z"
                 ></Path>
                 <G>
@@ -572,7 +579,7 @@ const Customization = () => {
                   ></Path>
                 </G>
                 <Path
-                  style={{ fill: "#fdc99f" }}
+                  style={{ fill: `${skinColor}` }}
                   d="M349.527,362.057c-0.394-10.223-11.898-39.632-15.183-47.84c-0.104-1.073-0.241-2.393-0.416-4.004 c-1.836-16.976,8.946-41.98,8.946-41.98l-80.291-141.542c0,9.635,2.982,42.21,2.982,63.774s7.341,100.937,7.341,100.937 c-7.799,18.353-7.341,51.386-7.341,51.386c5.047,42.21,49.092,51.387,49.092,51.387 C353.656,394.173,349.527,362.057,349.527,362.057z"
                 ></Path>
                 <Path
@@ -777,6 +784,38 @@ const Customization = () => {
               </G>
             </Svg>
           )}
+          <Text category="h5" style={{ marginTop: 20 }}>
+            Skin Color
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 20,
+              flexWrap: "wrap",
+            }}
+          >
+            {skinPallete.length > 0 &&
+              skinPallete.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={{
+                      height: 30,
+                      width: 30,
+                      backgroundColor: item,
+                      borderRadius: 100,
+                      marginHorizontal: 3,
+                    }}
+                    onPress={() => {
+                      setSkinColor(item);
+                      console.log(item);
+                    }}
+                  />
+                );
+              })}
+          </View>
           <View
             style={{
               flexDirection: "row",

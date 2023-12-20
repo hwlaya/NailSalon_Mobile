@@ -99,6 +99,18 @@ const Booking = () => {
       });
   }, []);
 
+  const [discounts, setDiscounts] = useState([]);
+  const [filteredDiscounts, setFilteredDiscounts] = useState([]);
+  const [discountPrice, setDiscountPrice] = useState([]);
+  const [selectedDiscounts, setSelectedDiscounts] = useState(null);
+
+  useEffect(() => {
+    api.get("/getApplicableDiscounts").then((response) => {
+      setDiscounts(response.data.discounts);
+      console.log("Discounts", response.data);
+    });
+  }, []);
+
   useEffect(() => {
     const price = parseFloat(productValue.split("₱")[1]) || 0;
     const price1 = parseFloat(productValue1.split("₱")[1]) || 0;
@@ -358,11 +370,8 @@ const Booking = () => {
                             : null
                         } ₱${selected.price}`
                       );
-
-                      // console.log(productValue);
                     }}
                   >
-                    {/* <SelectItem title="None" /> */}
                     {products.map((product, index) => (
                       <SelectItem key={index} title={product.product_name} />
                     ))}
@@ -605,12 +614,51 @@ const Booking = () => {
               disabled="true"
             />
             <View>
-              <Text>Total: </Text>
+              <Text style={{ fontWeight: "bold" }}>Payment Details</Text>
             </View>
             <View style={{ alignItems: "flex-end" }}>
+              <Text>Subtotal:</Text>
+              <Input
+                placeholder="Subtotal Price"
+                value={`₱${String(totalPrice)}`}
+                style={styles.inputStyle}
+                disabled="true"
+              />
+              <Text>Other Discounts:</Text>
+              <Select
+                style={{ width: 200, padding: 10 }}
+                label="Discount"
+                onSelect={(index) => {
+                  setSelectedDiscounts(filteredDiscounts[index - 1]);
+                }}
+                value={
+                  selectedDiscounts !== null
+                    ? selectedDiscounts.discount_name
+                    : ""
+                }
+              >
+                {filteredDiscounts.length > 0 &&
+                  filteredDiscounts.map((item, index) => {
+                    return (
+                      <SelectItem
+                        key={index}
+                        title={`${item.discount_name} - ${item.discount_percent}%`}
+                      />
+                    );
+                  })}
+              </Select>
+              <Text>Total: </Text>
               <Input
                 placeholder="Total Price"
-                value={`₱${String(totalPrice)}`}
+                value={`₱${
+                  selectedDiscounts !== null
+                    ? String(
+                        totalPrice -
+                          totalPrice *
+                            (Number(selectedDiscounts.discount_percent) / 100)
+                      )
+                    : ""
+                }`}
                 style={styles.inputStyle}
                 disabled="true"
               />
@@ -667,11 +715,12 @@ const Booking = () => {
               formdata.append("time_in", timeIn);
               formdata.append("time_out", timeOut);
               formdata.append("branch", "Sampaloc Manila");
-              formdata.append("staff_id", selectedStaff);
+              formdata.append("staff_id", staff[selectedIndex].id);
               formdata.append("service1", productValue.split("₱")[0]);
               formdata.append("service2", productValue1.split("₱")[0]);
               formdata.append("service3", productValue2.split("₱")[0]);
               formdata.append("total_price", totalPrice);
+              formdata.append("discount_id", selectedDiscounts.id);
 
               try {
                 const response = await api.post("booking", formdata);
@@ -680,6 +729,7 @@ const Booking = () => {
               } catch (err) {
                 console.log(err.response);
               }
+              // console.log(staff[selectedIndex].id);
             } else if (progress === 1) {
               Alert.alert("Warning!", "Already at the last page!");
             } else {
@@ -687,6 +737,30 @@ const Booking = () => {
               tempProgress = tempProgress + 0.25;
               setPage(page + 1);
               setProgress(tempProgress);
+            }
+
+            if (page === 3) {
+              const filProducts = [
+                productValue.split(" ₱")[0],
+                productValue1.split(" ₱")[0],
+                productValue2.split(" ₱")[0],
+              ];
+              const filteredProducts = filProducts.filter(
+                (product) =>
+                  product !== "" && product !== null && product !== undefined
+              );
+              const filtered = discounts.filter((discount) => {
+                if (
+                  discount.product &&
+                  filteredProducts.includes(discount.product.product_name)
+                ) {
+                  return true;
+                } else {
+                  return false;
+                }
+              });
+              setFilteredDiscounts(filtered);
+              setDiscountPrice(0);
             }
 
             if (page === 1) {
@@ -715,6 +789,7 @@ const Booking = () => {
               api
                 .get("getAvailableStaff", {
                   params: {
+                    date: date,
                     time_in: `${moment(selectedDate).format(
                       "YYYY-MM-DD"
                     )} ${selectedTime}`,
@@ -730,7 +805,7 @@ const Booking = () => {
                 })
                 .then((response) => {
                   setStaff(response.data.staff);
-                  console.log(response.data.staff);
+                  console.log("ito yung staff arr", response.data.staff);
                 });
             }
           }}
