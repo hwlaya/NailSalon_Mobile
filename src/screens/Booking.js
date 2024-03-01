@@ -151,7 +151,7 @@ const Booking = () => {
             <View style={{ paddingHorizontal: 20, paddingVertical: 12 }}>
               <Datepicker
                 label={`Choose a Date`}
-                min={moment().add(1, "days").toDate()}
+                // min={moment().add(1, "days").toDate()}
                 date={selectedDate}
                 onSelect={(date) => {
                   setSelectedDate(date);
@@ -497,46 +497,46 @@ const Booking = () => {
           <View style={styles.bodyContainer}>
             <Text style={styles.textStyle}> Assigned Technician</Text>
             <>
-              <RadioGroup
-                selectedIndex={selectedStaff}
-                onChange={(index) => {
-                  console.log("RadioGroup - Selected Index:", index);
-                  console.log("RadioGroup - Selected Item:", staff[index]); // Log the selected staff item
-                  setSelectedStaff(index); //  update the state
-                }}
-              >
-                {staff.length > 0 &&
-                  staff.map((item, index) => {
-                    console.log(staff);
-                    return (
-                      <View style={styles.p3container} key={index}>
-                        <View style={styles.p3content}>
-                          <Card style={styles.tcardStyle}>
-                            <Image
-                              source={{
-                                uri: `https://graceynails.com/NailSalonProject-main/public/img/profile_pictures/${item.id}/${item.staff_image}`,
-                              }}
-                              style={styles.imageStyle}
-                            />
-                          </Card>
-                          <Radio
-                            onChange={() => {
-                              setSelectedStaff(index);
+              {/* <RadioGroup
+              // selectedIndex={selectedStaff}
+              // onChange={(index) => {
+              //   console.log("RadioGroup - Selected Index:", index);
+              //   console.log("RadioGroup - Selected Item:", staff[index]); // Log the selected staff item
+              //   setSelectedStaff(index); //  update the state
+              // }}
+              > */}
+              {staff.length > 0 &&
+                staff.map((item, index) => {
+                  console.log(staff);
+                  return (
+                    <View style={styles.p3container} key={index}>
+                      <View style={styles.p3content}>
+                        <Card style={styles.tcardStyle}>
+                          <Image
+                            source={{
+                              uri: `https://graceynails.com/NailSalonProject-main/public/img/profile_pictures/${item.id}/${item.staff_image}`,
                             }}
-                            checked={selectedStaff === index}
-                          >
-                            {`Option ${index + 1}`}
-                          </Radio>
-                          <Text>Name: {item.staff_name}</Text>
-                          <Text>Services:</Text>
-                          {item.services.map((service) => (
-                            <Text key={service.id}>{service.service_name}</Text>
-                          ))}
-                        </View>
+                            style={styles.imageStyle}
+                          />
+                        </Card>
+                        <Radio
+                          onChange={() => {
+                            setSelectedStaff(index);
+                          }}
+                          checked={selectedStaff === index}
+                        >
+                          {`Option ${index + 1}`}
+                        </Radio>
+                        <Text>Name: {item.staff_name}</Text>
+                        <Text>Services:</Text>
+                        {item.services.map((service) => (
+                          <Text key={service.id}>{service.service_name}</Text>
+                        ))}
                       </View>
-                    );
-                  })}
-              </RadioGroup>
+                    </View>
+                  );
+                })}
+              {/* </RadioGroup> */}
             </>
           </View>
         ) : (
